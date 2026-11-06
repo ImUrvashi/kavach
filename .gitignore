@@ -1,0 +1,21 @@
+# Secrets: never commit the API key
+.env
+
+# Python and tools
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.claude/
+.DS_Store
+
+# Generated audio: warning clips, demo calls, listening copies
+cache/
+
+# The cloned family voice (personal data)
+voice/
+
+# All project documents (explainer, file guide, scam guide, plan, work log,
+# interview prep) stay on this laptop only: never committed, so they can
+# never appear in the repo or its history.
+docs/
