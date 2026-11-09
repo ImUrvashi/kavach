@@ -137,3 +137,23 @@ def test_prisma_spelling_of_upi_with_spaces():
     # From the real audio demo: "क्यूआर स्कैन करके अपना यू पी आई पिन डालिये…"
     r = ScamDetector().update("क्यूआर स्कैन करके अपना यू पी आई पिन डालिये, पैसे तुरंत आपके खाते में आ जाएंगे।", 0)
     assert {"payment", "upi_receive", "credential"} <= {m.category for m in r.matches}
+
+
+# ---- Tuned to the Kannada audio demo on Nov 6 (what Prisma actually wrote) ----
+@pytest.mark.parametrize("text,category", [
+    ("ವಿಡಿಯೋ ಕಾಲ್ ನಲ್ಲೇ ಇರಿ", "secrecy"),          # Prisma put a space in ಕಾಲ್ನಲ್ಲೇ
+    ("ಯಾರಿಗೂ ಹೇಳ್ಬೇಡಿ", "secrecy"),               # spoken short form of ಹೇಳಬೇಡಿ
+    ("ನಿಮ್ಮ ಹಣವನ್ನು ಆರ್ ಬೈ ಸೇಫ್ ಅಕೌಂಟ್ ಗೆ ವರ್ಗಾಯಿಸಿ", "authority"),  # RBI misheard
+])
+def test_prisma_kannada_spellings(text, category):
+    assert category in {m.category for m in ScamDetector().update(text, 0).matches}
+
+
+# ---- Tuned to the full benchmark on Nov 6 (what Prisma actually wrote) ----
+@pytest.mark.parametrize("text,category", [
+    ("qr scan karke apna upi pin daliye paise turant aapke account mein aa jaayenge", "credential"),  # "daliye"
+    ("ಈ ಟ್ರೇಡಿಂಗ್ ಆಲ್ ಆ್ಯಪ್ ಡೌನ್ ಲೋಡ್ ಮಾಡಿ", "remote"),    # Prisma split ಡೌನ್ ಲೋಡ್
+    ("ಎಪಿಕೆ ಇನ್ ಸ್ಟಾಲ್ ಮಾಡಿ", "remote"),
+])
+def test_prisma_benchmark_spellings(text, category):
+    assert category in {m.category for m in ScamDetector().update(text, 0).matches}

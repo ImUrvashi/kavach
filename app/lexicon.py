@@ -47,7 +47,7 @@ SIGNALS: list[Signal] = [
         # "कस्टम(?!र)": customs, but not कस्टमर (customer), as in "customer care".
         "सीबीआई|सी बी आई|पुलिस|क्राइम ब्रांच|साइबर (?:सेल|क्राइम)|कस्टम(?!र)|नारकोटिक्स|ट्राई|आरबीआई|"
         "इनकम टैक्स|आयकर|अदालत|कोर्ट|इंस्पेक्टर|ईडी ",
-        "ಸಿಬಿಐ|ಪೊಲೀಸ್|ಕ್ರೈಂ ಬ್ರಾಂಚ್|ಸೈಬರ್|ಕಸ್ಟಮ್ಸ್|ಆರ್‌ಬಿಐ|ಆರ್ಬಿಐ|ಟ್ರಾಯ್|ನ್ಯಾಯಾಲಯ|ಕೋರ್ಟ್|ಇನ್ಸ್‌ಪೆಕ್ಟರ್|ಇನ್ಸ್ಪೆಕ್ಟರ್|ಅಧಿಕಾರಿ",
+        "ಸಿಬಿಐ|ಪೊಲೀಸ್|ಕ್ರೈಂ ಬ್ರಾಂಚ್|ಸೈಬರ್|ಕಸ್ಟಮ್ಸ್|ಆರ್‌ಬಿಐ|ಆರ್ಬಿಐ|ಆರ್ ಬಿ ಐ|ಆರ್ ಬೈ|ಟ್ರಾಯ್|ನ್ಯಾಯಾಲಯ|ಕೋರ್ಟ್|ಇನ್ಸ್‌ಪೆಕ್ಟರ್|ಇನ್ಸ್ಪೆಕ್ಟರ್|ಅಧಿಕಾರಿ",
     ]),
     Signal("threat", 20, "Threatens arrest, a case or jail", [
         r"arrest\w*|warrant|jail|fir|money laundering|drugs?|illegal|legal action|case (?:file|darj|register)",
@@ -61,7 +61,7 @@ SIGNALS: list[Signal] = [
         rf"video call (?:{PE}) (?:rahiye|raho|rahein|bane)|don'?t tell anyone|do not disconnect|stay on (?:the )?(?:video )?call",
         "को (?:मत|ना|न|नहीं) बता|" + FON + " (?:मत|ना|न) (?:काट|कट|डिस्कनेक्ट)|"
         "वीडियो कॉल (?:पर|पे) (?:रहिए|रहो|रहें|रहे|बने)|कैमरा (?:ऑन|चालू)|अकेले (?:रहिए|रहो|कमरे)",
-        "ಹೇಳ ?ಬೇಡ|(?:ಕರೆ|ಫೋನ್|ಕಾಲ್) ಕಟ್ ಮಾಡಬೇಡಿ|ವಿಡಿಯೋ ಕಾಲ್‌?ನಲ್ಲೇ? ಇರಿ|ಕ್ಯಾಮೆರಾ ಆನ್|ಒಬ್ಬರೇ ಇರಿ",
+        "ಹೇಳ ?ಬೇಡ|ಹೇಳ್ಬೇಡ|(?:ಕರೆ|ಫೋನ್|ಕಾಲ್) ಕಟ್ ಮಾಡಬೇಡಿ|ವಿಡಿಯೋ ಕಾಲ್[‌ ]?ನಲ್ಲೇ? ಇರಿ|ಕ್ಯಾಮೆರಾ ಆನ್|ಒಬ್ಬರೇ ಇರಿ",
     ]),
     Signal("urgency", 10, "Rushes you", [
         r"turant|fauran|immediately|right now|within (?:one|1|two|2) hours?|ek ghante|do ghante|aaj raat|last warning|warna",
@@ -80,7 +80,7 @@ SIGNALS: list[Signal] = [
         "ದಂಡ|ಪ್ರೊಸೆಸಿಂಗ್ ಫೀ|ಗೂಗಲ್ ಪೇ|ಫೋನ್ ಪೇ|ಯುಪಿಐ",
     ]),
     Signal("credential", 35, "Asks for your OTP, PIN or password", [
-        r"(?:otp|o t p|pin|cvv|password|card number).{0,30}(?:bata|bol|share|send|bhej|tell|read|daal)\w*|"
+        r"(?:otp|o t p|pin|cvv|password|card number).{0,30}(?:bata|bol|share|send|bhej|tell|read|daal|dal)\w*|"
         r"(?:bata|bol|share|send|tell)\w*.{0,15}(?:otp|cvv|pin)",
         "(?:ओटीपी|ओ टी पी|पिन|सीवीवी|पासवर्ड|कार्ड नंबर).{0,30}(?:बता|बोल|भेज|शेयर|पढ़|डाल)",
         "(?:ಒಟಿಪಿ|ಓಟಿಪಿ|ಪಿನ್|ಸಿವಿವಿ|ಪಾಸ್‌ವರ್ಡ್|ಪಾಸ್ವರ್ಡ್).{0,30}(?:ಹೇಳಿ|ಹೇಳ್ತೀರಾ|ಕಳುಹಿಸಿ|ಓದಿ|ಶೇರ್|ಹಾಕಿ)",
@@ -89,7 +89,7 @@ SIGNALS: list[Signal] = [
         r"any ?desk|team ?viewer|quick ?support|rust ?desk|screen share|"
         r"(?:app|apk).{0,20}(?:download|install)\w*|" + rf"link (?:{PE}) click\w*",
         "एनीडेस्क|एनी डेस्क|टीमव्यूअर|टीम व्यूअर|स्क्रीन शेयर|(?:ऐप|एप|एपीके).{0,20}(?:डाउनलोड|इंस्टॉल)|लिंक (?:पर|पे) क्लिक",
-        "ಎನಿಡೆಸ್ಕ್|ಎನಿ ಡೆಸ್ಕ್|ಟೀಮ್ ?ವ್ಯೂವರ್|ಸ್ಕ್ರೀನ್ ಶೇರ್|(?:ಆಪ್|ಆ್ಯಪ್|ಎಪಿಕೆ).{0,20}(?:ಡೌನ್‌ಲೋಡ್|ಡೌನ್ಲೋಡ್|ಇನ್‌ಸ್ಟಾಲ್|ಇನ್ಸ್ಟಾಲ್)|ಲಿಂಕ್.{0,10}ಕ್ಲಿಕ್",
+        "ಎನಿಡೆಸ್ಕ್|ಎನಿ ಡೆಸ್ಕ್|ಟೀಮ್ ?ವ್ಯೂವರ್|ಸ್ಕ್ರೀನ್ ಶೇರ್|(?:ಆಪ್|ಆ್ಯಪ್|ಎಪಿಕೆ).{0,20}(?:ಡೌನ್[‌ ]?ಲೋಡ್|ಇನ್[‌ ]?ಸ್ಟಾಲ್)|ಲಿಂಕ್.{0,10}ಕ್ಲಿಕ್",
     ]),
     Signal("parcel", 15, "Tells a parcel or courier story", [
         r"parcel|courier|fedex|fed ex|dhl|blue dart|package seized|seize",
@@ -190,6 +190,6 @@ for _s in SIGNALS + [PROTECTIVE]:
 # Words for Prisma word boosting: single words, letters only (Gnani rule).
 BOOST_WORDS = {
     "hi": ["सीबीआई", "ओटीपी", "केवाईसी", "पुलिस", "पार्सल", "अरेस्ट", "वारंट", "कस्टम्स", "एनीडेस्क", "फेडेक्स", "आरबीआई", "क्यूआर", "यूपीआई", "रिफंड", "टेलीग्राम"],
-    "kn": ["ಸಿಬಿಐ", "ಒಟಿಪಿ", "ಕೆವೈಸಿ", "ಪೊಲೀಸ್", "ಪಾರ್ಸೆಲ್", "ಅರೆಸ್ಟ್", "ವಾರಂಟ್", "ಕಸ್ಟಮ್ಸ್", "ಎನಿಡೆಸ್ಕ್", "ಕ್ಯೂಆರ್", "ಯುಪಿಐ", "ರಿಫಂಡ್"],
+    "kn": ["ಸಿಬಿಐ", "ಆರ್ಬಿಐ", "ಒಟಿಪಿ", "ಕೆವೈಸಿ", "ಪೊಲೀಸ್", "ಪಾರ್ಸೆಲ್", "ಅರೆಸ್ಟ್", "ವಾರಂಟ್", "ಕಸ್ಟಮ್ಸ್", "ಎನಿಡೆಸ್ಕ್", "ಕ್ಯೂಆರ್", "ಯುಪಿಐ", "ರಿಫಂಡ್"],
     "en": ["CBI", "OTP", "KYC", "police", "parcel", "arrest", "warrant", "customs", "AnyDesk", "FedEx", "RBI", "QR", "UPI", "refund", "Telegram"],
 }
