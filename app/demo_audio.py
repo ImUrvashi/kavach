@@ -50,15 +50,16 @@ def silence(seconds: float) -> np.ndarray:
     return np.zeros(int(seconds * RATE), dtype="<i2")
 
 
-async def build_demo_call(stt_lang: str, script: str) -> np.ndarray | None:
+async def build_demo_call(stt_lang: str, script: str, lines: list[str] | None = None) -> np.ndarray | None:
     """The whole scripted call as one 16 kHz recording, or None if Timbre fails.
+    Pass `lines` to speak a call that isn't one of the demo scripts.
 
     Layout: a short lead-in, each line followed by a pause, and a longer tail
     so Prisma returns the last sentence.
     """
     lang = TTS_LANG.get(stt_lang, "hi")
     parts = [silence(config.DEMO_LEAD_S)]
-    for line in get_call(stt_lang, script):
+    for line in lines or get_call(stt_lang, script):
         wav = await synthesize(line, lang, use_clone=False, voice=config.DEMO_CALLER_VOICE.get(lang))
         if wav is None and lang == "en":
             # If Timbre won't read English, the Hindi voice can read Hinglish.

@@ -10,7 +10,9 @@ from app import benchmark, config, demo_audio
 from app.benchmark import (all_calls, chart_svg, phone_quality, run_all, run_call,
                            summarize, to_markdown)
 from app.demo_audio import RATE
-from app.mock_calls import get_call
+from app.mock_calls import CALLS
+from app.unseen_calls import UNSEEN
+from app.warnings_text import SCAM_NAMES
 
 
 def fake_wav(seconds=0.05):
@@ -48,7 +50,7 @@ def make_fake_prisma(mishear=None):
             self.frames += 1
 
         async def events(self):
-            lines = (mishear or {}).get((self.lang, FakePrisma.script)) or get_call(self.lang, FakePrisma.script)
+            lines = (mishear or {}).get((self.lang, FakePrisma.script)) or benchmark.call_spec(self.lang, FakePrisma.script)[0]
             for i, line in enumerate(lines):
                 while self.frames < (i + 1) * 2 and not self.closed:
                     await asyncio.sleep(0.005)
@@ -130,3 +132,26 @@ def test_rescore_uses_the_saved_transcript_only(fast):
     assert again["rescored"] and again["max_risk"] == r["max_risk"] and again["warned"] == r["warned"]
     assert again["transcript"][-1]["text"] == r["transcript"][-1]["text"]
     assert benchmark.rescore({"error": "x"}) == {"error": "x"}
+
+
+def test_held_out_set_is_separate_and_well_formed():
+    calls = all_calls(unseen=True)
+    assert len(calls) == 15
+    assert all(c in UNSEEN for c in calls) and not set(UNSEEN) & set(CALLS)
+    scams = [c for c in calls if UNSEEN[c]["expected"]]
+    assert len(scams) == 9 and all(UNSEEN[c]["expected"] in SCAM_NAMES for c in scams)
+    assert calls[0] == ("hi-IN", "trai_sim") and calls[-1] == ("kn-IN", "ok_branch_kyc")  # scams first
+    demo_lines = {line for lines in CALLS.values() for line in lines}
+    assert not demo_lines & {line for u in UNSEEN.values() for line in u["lines"]}  # no copied lines
+
+
+def test_run_call_on_a_held_out_call(fast):
+    # Only the plumbing is checked here. Whether Kavach warns on held-out calls
+    # is the benchmark's job; asserting it in a test would turn them into tuning data.
+    Fake = make_fake_prisma()
+    Fake.script = "ok_delivery_otp"
+    r = asyncio.run(run_call("en-IN", "ok_delivery_otp", session_cls=Fake))
+    assert r["kind"] == "genuine" and r["short"] == "delivery OTP ✓" and r["expected_type"] is None
+    assert len(r["transcript"]) == 3
+    s = summarize([r])
+    assert "held-out" in to_markdown([r], s, noise=False) and "held-out" in chart_svg([r], s)

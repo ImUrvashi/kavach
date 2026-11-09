@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 412" width="900" height="412" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="Kavach warned on 18 of 18 scam calls and 0 of 9 genuine calls">
+<rect width="900" height="412" fill="#fcfcfb"/>
+<text x="56" y="32" font-size="18" font-weight="600" fill="#0b0b0b">Kavach warned on 18 of 18 scam calls and 0 of 9 genuine calls</text>
+<text x="56" y="54" font-size="13" fill="#52514e">Highest risk score per call · each call spoken by Gnani Timbre and transcribed live by Gnani Prisma</text>
+<line x1="56" x2="876" y1="316.0" y2="316.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="320.0" font-size="11" fill="#52514e" text-anchor="end">0</text>
+<line x1="56" x2="876" y1="261.0" y2="261.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="265.0" font-size="11" fill="#52514e" text-anchor="end">25</text>
+<line x1="56" x2="876" y1="206.0" y2="206.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="210.0" font-size="11" fill="#52514e" text-anchor="end">50</text>
+<line x1="56" x2="876" y1="151.0" y2="151.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="155.0" font-size="11" fill="#52514e" text-anchor="end">75</text>
+<line x1="56" x2="876" y1="96.0" y2="96.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="100.0" font-size="11" fill="#52514e" text-anchor="end">100</text>
+<path d="M56.0,316.0 V100.0 Q56.0,96.0 60.0,96.0 H76.7 Q80.7,96.0 80.7,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · police (scam): highest risk 100, warned</title></path>
+<text x="68.4" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 68.4 328.0)">police</text>
+<path d="M84.7,316.0 V100.0 Q84.7,96.0 88.7,96.0 H105.5 Q109.5,96.0 109.5,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · family (scam): highest risk 100, warned</title></path>
+<text x="97.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 97.1 328.0)">family</text>
+<path d="M113.5,316.0 V100.0 Q113.5,96.0 117.5,96.0 H134.2 Q138.2,96.0 138.2,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · UPI QR (scam): highest risk 100, warned</title></path>
+<text x="125.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 125.9 328.0)">UPI QR</text>
+<path d="M142.2,316.0 V166.0 Q142.2,162.0 146.2,162.0 H163.0 Q167.0,162.0 167.0,166.0 V316.0 Z" fill="#2a78d6"><title>Hindi · job (scam): highest risk 70, warned</title></path>
+<text x="154.6" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 154.6 328.0)">job</text>
+<path d="M171.0,316.0 V100.0 Q171.0,96.0 175.0,96.0 H191.7 Q195.7,96.0 195.7,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · invest (scam): highest risk 100, warned</title></path>
+<text x="183.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 183.3 328.0)">invest</text>
+<path d="M199.7,316.0 V100.0 Q199.7,96.0 203.7,96.0 H220.4 Q224.4,96.0 224.4,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · care (scam): highest risk 100, warned</title></path>
+<text x="212.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 212.1 328.0)">care</text>
+<path d="M228.4,316.0 V318.0 Q228.4,314.0 232.4,314.0 H249.2 Q253.2,314.0 253.2,318.0 V316.0 Z" fill="#eb6834"><title>Hindi · bank/delivery (genuine): highest risk 0, no warning</title></path>
+<text x="240.8" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 240.8 328.0)">bank/delivery</text>
+<path d="M257.2,316.0 V276.0 Q257.2,272.0 261.2,272.0 H277.9 Q281.9,272.0 281.9,276.0 V316.0 Z" fill="#eb6834"><title>Hindi · family ✓ (genuine): highest risk 20, no warning</title></path>
+<text x="269.6" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 269.6 328.0)">family ✓</text>
+<path d="M285.9,316.0 V287.0 Q285.9,283.0 289.9,283.0 H306.7 Q310.7,283.0 310.7,287.0 V316.0 Z" fill="#eb6834"><title>Hindi · refund ✓ (genuine): highest risk 15, no warning</title></path>
+<text x="298.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 298.3 328.0)">refund ✓</text>
+<text x="183.3" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Hindi</text>
+<path d="M338.7,316.0 V100.0 Q338.7,96.0 342.7,96.0 H359.4 Q363.4,96.0 363.4,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · police (scam): highest risk 100, warned</title></path>
+<text x="351.0" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 351.0 328.0)">police</text>
+<path d="M367.4,316.0 V100.0 Q367.4,96.0 371.4,96.0 H388.1 Q392.1,96.0 392.1,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · family (scam): highest risk 100, warned</title></path>
+<text x="379.8" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 379.8 328.0)">family</text>
+<path d="M396.1,316.0 V100.0 Q396.1,96.0 400.1,96.0 H416.9 Q420.9,96.0 420.9,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · UPI QR (scam): highest risk 100, warned</title></path>
+<text x="408.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 408.5 328.0)">UPI QR</text>
+<path d="M424.9,316.0 V166.0 Q424.9,162.0 428.9,162.0 H445.6 Q449.6,162.0 449.6,166.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · job (scam): highest risk 70, warned</title></path>
+<text x="437.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 437.3 328.0)">job</text>
+<path d="M453.6,316.0 V100.0 Q453.6,96.0 457.6,96.0 H474.4 Q478.4,96.0 478.4,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · invest (scam): highest risk 100, warned</title></path>
+<text x="466.0" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 466.0 328.0)">invest</text>
+<path d="M482.4,316.0 V100.0 Q482.4,96.0 486.4,96.0 H503.1 Q507.1,96.0 507.1,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · care (scam): highest risk 100, warned</title></path>
+<text x="494.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 494.7 328.0)">care</text>
+<path d="M511.1,316.0 V318.0 Q511.1,314.0 515.1,314.0 H531.9 Q535.9,314.0 535.9,318.0 V316.0 Z" fill="#eb6834"><title>Hinglish · bank/delivery (genuine): highest risk 0, no warning</title></path>
+<text x="523.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 523.5 328.0)">bank/delivery</text>
+<path d="M539.9,316.0 V318.0 Q539.9,314.0 543.9,314.0 H560.6 Q564.6,314.0 564.6,318.0 V316.0 Z" fill="#eb6834"><title>Hinglish · family ✓ (genuine): highest risk 0, no warning</title></path>
+<text x="552.2" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 552.2 328.0)">family ✓</text>
+<path d="M568.6,316.0 V287.0 Q568.6,283.0 572.6,283.0 H589.3 Q593.3,283.0 593.3,287.0 V316.0 Z" fill="#eb6834"><title>Hinglish · refund ✓ (genuine): highest risk 15, no warning</title></path>
+<text x="581.0" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 581.0 328.0)">refund ✓</text>
+<text x="466.0" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Hinglish</text>
+<path d="M621.3,316.0 V100.0 Q621.3,96.0 625.3,96.0 H642.1 Q646.1,96.0 646.1,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · police (scam): highest risk 100, warned</title></path>
+<text x="633.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 633.7 328.0)">police</text>
+<path d="M650.1,316.0 V100.0 Q650.1,96.0 654.1,96.0 H670.8 Q674.8,96.0 674.8,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · family (scam): highest risk 100, warned</title></path>
+<text x="662.4" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 662.4 328.0)">family</text>
+<path d="M678.8,316.0 V100.0 Q678.8,96.0 682.8,96.0 H699.6 Q703.6,96.0 703.6,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · UPI QR (scam): highest risk 100, warned</title></path>
+<text x="691.2" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 691.2 328.0)">UPI QR</text>
+<path d="M707.6,316.0 V166.0 Q707.6,162.0 711.6,162.0 H728.3 Q732.3,162.0 732.3,166.0 V316.0 Z" fill="#2a78d6"><title>Kannada · job (scam): highest risk 70, warned</title></path>
+<text x="719.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 719.9 328.0)">job</text>
+<path d="M736.3,316.0 V100.0 Q736.3,96.0 740.3,96.0 H757.0 Q761.0,96.0 761.0,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · invest (scam): highest risk 100, warned</title></path>
+<text x="748.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 748.7 328.0)">invest</text>
+<path d="M765.0,316.0 V100.0 Q765.0,96.0 769.0,96.0 H785.8 Q789.8,96.0 789.8,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · care (scam): highest risk 100, warned</title></path>
+<text x="777.4" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 777.4 328.0)">care</text>
+<path d="M793.8,316.0 V318.0 Q793.8,314.0 797.8,314.0 H814.5 Q818.5,314.0 818.5,318.0 V316.0 Z" fill="#eb6834"><title>Kannada · bank/delivery (genuine): highest risk 0, no warning</title></path>
+<text x="806.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 806.1 328.0)">bank/delivery</text>
+<path d="M822.5,316.0 V276.0 Q822.5,272.0 826.5,272.0 H843.3 Q847.3,272.0 847.3,276.0 V316.0 Z" fill="#eb6834"><title>Kannada · family ✓ (genuine): highest risk 20, no warning</title></path>
+<text x="834.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 834.9 328.0)">family ✓</text>
+<path d="M851.3,316.0 V287.0 Q851.3,283.0 855.3,283.0 H872.0 Q876.0,283.0 876.0,287.0 V316.0 Z" fill="#eb6834"><title>Kannada · refund ✓ (genuine): highest risk 15, no warning</title></path>
+<text x="863.6" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 863.6 328.0)">refund ✓</text>
+<text x="748.7" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Kannada</text>
+<line x1="56" x2="876" y1="162.0" y2="162.0" stroke="#0b0b0b" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="876" y="156.0" font-size="11" fill="#0b0b0b" text-anchor="end">warns at 70+</text>
+<rect x="56" y="62" width="12" height="12" rx="3" fill="#2a78d6"/>
+<text x="74" y="72" font-size="13" fill="#0b0b0b">Scam call</text>
+<rect x="176" y="62" width="12" height="12" rx="3" fill="#eb6834"/>
+<text x="194" y="72" font-size="13" fill="#0b0b0b">Genuine call</text>
+</svg>

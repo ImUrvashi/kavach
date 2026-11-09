@@ -7,13 +7,15 @@ Usage:
     python scripts/benchmark.py --lang hi-IN --script upi   # one call
     python scripts/benchmark.py --retry-errors     # re-run only the calls that failed last time
     python scripts/benchmark.py --rescore          # re-score saved transcripts with the current detector (free)
+    python scripts/benchmark.py --unseen           # the 15 held-out calls (never used for tuning)
 
 Each call is spoken by Gnani Timbre and streamed through Gnani Prisma at
 real-time speed, so a full run takes about 27 calls × ~25 s ÷ concurrency
 (about 4 minutes at the default of 3 at once). Costs: Timbre once per line
 (lines are saved after that), and Prisma for every second of every call.
 
-Writes to cache/benchmark/ (or cache/benchmark_noise/):
+Writes to cache/benchmark/ (cache/benchmark_noise/ with --noise,
+cache/benchmark_unseen/ with --unseen, cache/benchmark_unseen_noise/ with both):
     results.json   everything, including each call's transcript
     results.md     summary tables, ready to paste into the README
     chart.svg      highest risk per call, for the README
@@ -27,14 +29,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from app import config  # noqa: E402
-from app.benchmark import (LANG_NAMES, SHORT, all_calls, chart_svg, headline,  # noqa: E402
-                           rescore, run_all, summarize, to_markdown)
+from app.benchmark import (LANG_NAMES, all_calls, chart_svg, headline, rescore,  # noqa: E402
+                           run_all, short, summarize, to_markdown)
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--lang", choices=list(LANG_NAMES))
-    ap.add_argument("--script", help="scam, family, upi, job, investment, customer_care, legit, legit_family, legit_refund")
+    ap.add_argument("--script", help="one call, e.g. scam, family, upi, legit (or trai_sim with --unseen)")
+    ap.add_argument("--unseen", action="store_true", help="run the held-out calls instead of the demo calls")
     ap.add_argument("--noise", action="store_true", help="make the audio sound like a phone line")
     ap.add_argument("--concurrency", type=int, default=3, help="calls at once (default 3)")
     ap.add_argument("--retry-errors", action="store_true",
@@ -42,7 +45,7 @@ def main():
     ap.add_argument("--rescore", action="store_true",
                     help="score the saved Prisma transcripts again with the current detector (no Gnani calls)")
     args = ap.parse_args()
-    out = config.ROOT / "cache" / ("benchmark_noise" if args.noise else "benchmark")
+    out = config.ROOT / "cache" / ("benchmark" + ("_unseen" if args.unseen else "") + ("_noise" if args.noise else ""))
 
     if args.rescore:
         saved = out / "results.json"
@@ -66,7 +69,7 @@ def main():
         if not calls:
             sys.exit("No failed calls to re-run.")
     else:
-        calls = all_calls(args.lang, args.script)
+        calls = all_calls(args.lang, args.script, unseen=args.unseen)
     if not calls:
         sys.exit("No demo call matches that language and script.")
     print(f"Running {len(calls)} call(s){' with phone-line audio' if args.noise else ''}, "
@@ -82,7 +85,7 @@ def main():
 
 
 def show(r):
-    name = f"{LANG_NAMES[r['lang']]:8s} {SHORT[r['script']]:14s}"
+    name = f"{LANG_NAMES[r['lang']]:8s} {short(r):14s}"
     if "error" in r:
         print(f"  [ERROR] {name} {r['error']}")
     else:

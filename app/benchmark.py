@@ -7,6 +7,9 @@ transcript, and we record whether Kavach warned, how fast, and whether it
 named the scam correctly. Optionally the audio is made to sound like a phone
 line first (narrow band plus background hiss).
 
+Two sets of calls: the 27 demo calls (the detector was tuned on these), and
+15 held-out calls in unseen_calls.py that were never used for tuning.
+
 Run it with scripts/benchmark.py. The test calls are synthetic: one stock
 voice per language, no real scam recordings.
 """
@@ -20,6 +23,7 @@ from . import config
 from .demo_audio import RATE, build_demo_call, to_frames
 from .detector import ScamDetector
 from .mock_calls import CALLS, EXPECTED_TYPE
+from .unseen_calls import UNSEEN
 from .stt import GnaniSTTSession
 from .warnings_text import SCAM_NAMES
 
@@ -33,11 +37,28 @@ SHORT = {  # short names for the chart
 }
 
 
-def all_calls(lang: str | None = None, script: str | None = None) -> list[tuple[str, str]]:
-    """(language, script) for every demo call, scams first, optionally filtered."""
-    order = list(EXPECTED_TYPE) + ["legit", "legit_family", "legit_refund"]
-    calls = [(l, s) for (l, s) in CALLS if (not lang or l == lang) and (not script or s == script)]
-    return sorted(calls, key=lambda c: (list(LANG_NAMES).index(c[0]), order.index(c[1])))
+def short(r: dict) -> str:
+    """A call's short label for tables and the chart."""
+    return r.get("short") or SHORT.get(r["script"], r["script"])
+
+
+def call_spec(lang: str, script: str) -> tuple[list[str], str | None, str]:
+    """(lines, expected scam type or None for a genuine call, short label)."""
+    if (lang, script) in UNSEEN:
+        u = UNSEEN[(lang, script)]
+        return u["lines"], u["expected"], u["short"]
+    return CALLS[(lang, script)], EXPECTED_TYPE.get(script), SHORT[script]
+
+
+def all_calls(lang: str | None = None, script: str | None = None, unseen: bool = False) -> list[tuple[str, str]]:
+    """(language, script) for every call in a set, scams first, optionally filtered."""
+    source = list(UNSEEN) if unseen else list(CALLS)
+    calls = [(l, s) for (l, s) in source if (not lang or l == lang) and (not script or s == script)]
+
+    def key(c):
+        lines, expected, _ = call_spec(*c)
+        return (list(LANG_NAMES).index(c[0]), expected is None, source.index(c))
+    return sorted(calls, key=key)
 
 
 def phone_quality(pcm: np.ndarray, snr_db: float = 20.0, seed: int = 0) -> np.ndarray:
@@ -59,11 +80,12 @@ def phone_quality(pcm: np.ndarray, snr_db: float = 20.0, seed: int = 0) -> np.nd
 async def run_call(lang: str, script: str, noise: bool = False, session_cls=None) -> dict:
     """Play one demo call through Prisma and the detector; return what happened."""
     session_cls = session_cls or GnaniSTTSession
-    kind = "scam" if script in EXPECTED_TYPE else "genuine"
-    result = {"lang": lang, "script": script, "kind": kind,
-              "expected_type": EXPECTED_TYPE.get(script), "noise": noise}
+    lines_to_say, expected, label = call_spec(lang, script)
+    kind = "scam" if expected else "genuine"
+    result = {"lang": lang, "script": script, "short": label, "kind": kind,
+              "expected_type": expected, "noise": noise}
 
-    pcm = await build_demo_call(lang, script)
+    pcm = await build_demo_call(lang, script, lines_to_say)
     if pcm is None:
         return {**result, "error": "Timbre could not make the audio"}
     if noise:
@@ -133,7 +155,7 @@ def rescore(r: dict) -> dict:
         return r
     det = ScamDetector()
     lines = [{**l, "risk": det.update(l["text"], l["t"]).risk} for l in r["transcript"]]
-    base = {k: r[k] for k in ("lang", "script", "kind", "expected_type", "noise")}
+    base = {k: r[k] for k in ("lang", "script", "short", "kind", "expected_type", "noise") if k in r}
     return {**_finish(base, det, r["duration_s"], lines, r.get("prisma_errors", [])), "rescored": True}
 
 
@@ -169,8 +191,8 @@ def summarize(results: list[dict]) -> dict:
             by_lang[name] = {"scams_caught": sum(r["warned"] for r in ls), "scams": len(ls),
                              "false_alarms": sum(r["warned"] for r in lg), "genuine": len(lg)}
     by_type = {}
-    for script, kind in EXPECTED_TYPE.items():
-        rs = [r for r in scams if r["script"] == script]
+    for kind in SCAM_NAMES:
+        rs = [r for r in scams if r["expected_type"] == kind]
         if rs:
             by_type[SCAM_NAMES[kind]] = {"caught": sum(r["warned"] for r in rs), "calls": len(rs),
                                          "named_right": sum(bool(r["type_correct"]) for r in rs)}
@@ -195,9 +217,12 @@ def headline(s: dict) -> str:
 
 
 def to_markdown(results: list[dict], s: dict, noise: bool) -> str:
-    out = [f"# Kavach benchmark\n",
+    held_out = any((r["lang"], r["script"]) in UNSEEN for r in results)
+    out = [f"# Kavach benchmark{': held-out calls' if held_out else ''}\n",
            f"**{headline(s)}.**\n",
-           f"Each demo call was spoken by Gnani Timbre and streamed through Gnani Prisma "
+           ("These calls were written after tuning and never used to tune the detector. " if held_out else
+            "These are the demo calls the detector was tuned on, so this is close to a best case. ") +
+           f"Each call was spoken by Gnani Timbre and streamed through Gnani Prisma "
            f"at real-time speed{' with phone-line audio (300–3,400 Hz plus background hiss, 20 dB)' if noise else ''}. "
            f"Synthetic calls, one stock voice per language."
            f"{' Scores recomputed from the saved Prisma transcripts with the current detector.' if any(r.get('rescored') for r in results) else ''}\n",
@@ -217,10 +242,10 @@ def to_markdown(results: list[dict], s: dict, noise: bool) -> str:
             "| Language | Call | Kind | Highest risk | Warned at | Detected as |", "|---|---|---|---|---|---|"]
     for r in results:
         if "error" in r:
-            out.append(f"| {LANG_NAMES[r['lang']]} | {SHORT[r['script']]} | {r['kind']} | error: {r['error']} | | |")
+            out.append(f"| {LANG_NAMES[r['lang']]} | {short(r)} | {r['kind']} | error: {r['error']} | | |")
             continue
         mark = "✅" if r["correct"] else "❌"
-        out.append(f"| {LANG_NAMES[r['lang']]} | {SHORT[r['script']]} | {r['kind']} | {mark} {r['max_risk']} | "
+        out.append(f"| {LANG_NAMES[r['lang']]} | {short(r)} | {r['kind']} | {mark} {r['max_risk']} | "
                    f"{str(r['warn_t']) + ' s' if r['warn_t'] is not None else '—'} | "
                    f"{SCAM_NAMES.get(r['detected_type'], '—') if r['detected_type'] else '—'} |")
     if s["errors"]:
@@ -247,8 +272,9 @@ def chart_svg(results: list[dict], s: dict) -> str:
              f'font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="{headline(s)}">',
              f'<rect width="{W}" height="{H}" fill="#fcfcfb"/>',
              f'<text x="{left}" y="32" font-size="18" font-weight="600" fill="#0b0b0b">{headline(s)}</text>',
-             f'<text x="{left}" y="54" font-size="13" fill="#52514e">Highest risk score per call · each call spoken by '
-             f'Gnani Timbre and transcribed live by Gnani Prisma</text>']
+             f'<text x="{left}" y="54" font-size="13" fill="#52514e">Highest risk score per call'
+             f'{" (held-out calls, never used for tuning)" if any((r["lang"], r["script"]) in UNSEEN for r in ok) else ""}'
+             f' · spoken by Gnani Timbre, transcribed live by Gnani Prisma</text>']
     # recessive grid and y-axis labels
     for v in (0, 25, 50, 75, 100):
         parts.append(f'<line x1="{left}" x2="{W - right}" y1="{y(v):.1f}" y2="{y(v):.1f}" stroke="#e7e6e2" stroke-width="1"/>')
@@ -265,7 +291,7 @@ def chart_svg(results: list[dict], s: dict) -> str:
             # 4px rounded data end, square at the baseline
             path = (f"M{x:.1f},{top + plot_h:.1f} V{top_y + rad:.1f} Q{x:.1f},{top_y:.1f} {x + rad:.1f},{top_y:.1f} "
                     f"H{x + bar_w - rad:.1f} Q{x + bar_w:.1f},{top_y:.1f} {x + bar_w:.1f},{top_y + rad:.1f} V{top + plot_h:.1f} Z")
-            tip = (f"{LANG_NAMES[lang]} · {SHORT[r['script']]} ({r['kind']}): highest risk {r['max_risk']}, "
+            tip = (f"{LANG_NAMES[lang]} · {short(r)} ({r['kind']}): highest risk {r['max_risk']}, "
                    f"{'warned' if r['warned'] else 'no warning'}")
             parts.append(f'<path d="{path}" fill="{colors[r["kind"]]}"><title>{tip}</title></path>')
             if not r["correct"]:  # call out mistakes directly
@@ -273,7 +299,7 @@ def chart_svg(results: list[dict], s: dict) -> str:
                              f'fill="#0b0b0b" text-anchor="middle">✕</text>')
             lx, ly = x + bar_w / 2, top + plot_h + 12
             parts.append(f'<text x="{lx:.1f}" y="{ly:.1f}" font-size="10" fill="#52514e" text-anchor="end" '
-                         f'transform="rotate(-40 {lx:.1f} {ly:.1f})">{SHORT[r["script"]]}</text>')
+                         f'transform="rotate(-40 {lx:.1f} {ly:.1f})">{short(r)}</text>')
             x += bar_w + (bar_gap if bi < len(group) - 1 else 0)
         parts.append(f'<text x="{(gx0 + x) / 2:.1f}" y="{H - 14}" font-size="13" font-weight="600" fill="#0b0b0b" '
                      f'text-anchor="middle">{LANG_NAMES[lang]}</text>')
