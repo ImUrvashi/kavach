@@ -7,7 +7,8 @@ Usage:
     python scripts/benchmark.py --lang hi-IN --script upi   # one call
     python scripts/benchmark.py --retry-errors     # re-run only the calls that failed last time
     python scripts/benchmark.py --rescore          # re-score saved transcripts with the current detector (free)
-    python scripts/benchmark.py --unseen           # the 15 held-out calls (never used for tuning)
+    python scripts/benchmark.py --unseen           # held-out set 1 (15 calls; development data since v2)
+    python scripts/benchmark.py --blind            # blind held-out set 2 (30 calls written without seeing the rules)
 
 Each call is spoken by Gnani Timbre and streamed through Gnani Prisma at
 real-time speed, so a full run takes about 27 calls × ~25 s ÷ concurrency
@@ -37,7 +38,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--lang", choices=list(LANG_NAMES))
     ap.add_argument("--script", help="one call, e.g. scam, family, upi, legit (or trai_sim with --unseen)")
-    ap.add_argument("--unseen", action="store_true", help="run the held-out calls instead of the demo calls")
+    ap.add_argument("--unseen", action="store_true", help="run held-out set 1 instead of the demo calls")
+    ap.add_argument("--blind", action="store_true", help="run the blind held-out set 2")
     ap.add_argument("--noise", action="store_true", help="make the audio sound like a phone line")
     ap.add_argument("--concurrency", type=int, default=3, help="calls at once (default 3)")
     ap.add_argument("--retry-errors", action="store_true",
@@ -45,7 +47,7 @@ def main():
     ap.add_argument("--rescore", action="store_true",
                     help="score the saved Prisma transcripts again with the current detector (no Gnani calls)")
     args = ap.parse_args()
-    out = config.ROOT / "cache" / ("benchmark" + ("_unseen" if args.unseen else "") + ("_noise" if args.noise else ""))
+    out = config.ROOT / "cache" / ("benchmark" + ("_blind" if args.blind else "_unseen" if args.unseen else "") + ("_noise" if args.noise else ""))
 
     if args.rescore:
         saved = out / "results.json"
@@ -69,7 +71,7 @@ def main():
         if not calls:
             sys.exit("No failed calls to re-run.")
     else:
-        calls = all_calls(args.lang, args.script, unseen=args.unseen)
+        calls = all_calls(args.lang, args.script, unseen=args.unseen, blind=args.blind)
     if not calls:
         sys.exit("No demo call matches that language and script.")
     print(f"Running {len(calls)} call(s){' with phone-line audio' if args.noise else ''}, "

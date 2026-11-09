@@ -1,4 +1,10 @@
-"""Held-out test calls: written Nov 9 and never used to tune the detector.
+"""Held-out test calls, set 1: written Nov 9 before lexicon v2.
+
+STATUS: no longer held out. These calls exposed the v1 rules' weak spots
+(4 of 9 scams caught), and the v2 rules were written knowing those misses.
+They now count as development data; the fair test is blind_calls.py.
+
+Original note follows.
 
 The 27 demo calls in mock_calls.py are the calls the detector's patterns were
 tuned on, so scoring well on them is close to a best case. These 15 calls are

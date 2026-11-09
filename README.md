@@ -45,8 +45,10 @@ remote-access apps, parcel stories, KYC or electricity-cut threats,
 lottery or "sent by mistake" stories, family-emergency calls, "scan this QR
 to receive money", paid part-time jobs, guaranteed-return investments and
 fake customer care. Signals combine into a risk score, and genuine safety
-advice ("the bank never asks for your OTP") lowers it. It names 13 kinds of
-scam.
+advice ("the bank never asks for your OTP") lowers it. Signals are grouped
+into the shape most phone scams share: a story, pressure, and a request for
+money, a secret code or access; a request that comes with a story or
+pressure raises the score sharply. It names 13 kinds of scam.
 
 The detector is rules, not a model, on purpose: it adds no delay on top of
 Prisma, works the same in all three languages and scripts, and every warning
@@ -66,49 +68,75 @@ the warning come in the voice of someone they trust.
 
 ## Results
 
-Every test call is spoken by Timbre and streamed through Prisma at real-time
-speed, exactly like a live call; the detector then scores Prisma's
-transcript. All calls are synthetic.
+Kavach was tested four ways, from easiest to hardest. Everything below uses
+the current rules (lexicon v2, Nov 9). All calls are synthetic.
 
-There are two sets of calls, and the difference between them is the most
-important result here.
+| Test | What it is | Scams warned | False alarms |
+|---|---|---|---|
+| Demo calls | 27 calls I wrote and tuned the rules on | 18 / 18 | 0 / 9 |
+| **Blind set** | **30 calls written by a separate AI agent that never saw the rules; run once, after the rules were frozen** | **11 / 15** | **2 / 15** |
+| ICFD-31k test split | 4,477 fraud-call transcripts by other researchers ([IJCAI 2026](https://www.ijcai.org/proceedings/2026/786)); never inspected | **61%** (2,736) | not measurable* |
+| ICFD-31k cross-domain | 961 transcripts of five fraud types held out by the dataset's authors | 26% (251) | not measurable* |
 
-| | Demo calls (tuned on) | Held-out calls (never tuned on) |
-|---|---|---|
-| Calls | 27: 18 scams, 9 genuine | 15: 9 scams, 6 genuine |
-| Scams warned | **18 / 18** | **4 / 9** |
-| False alarms on genuine calls | **0 / 9** | **0 / 6** |
-| Same, over a simulated phone line | 18 / 18 and 0 / 9 | 4 / 9 and 0 / 6 |
-| Median Prisma delay per sentence | 140 ms | 122 ms |
+\* ICFD-31k is about 99% fraud calls, and its few "normal" calls are mostly
+failed scam attempts, so false alarms are measured on Kavach's own genuine
+calls only.
 
-- **Demo calls** (`app/mock_calls.py`): six kinds of scam and three genuine
-  look-alikes in each language. The detector's patterns were tuned on
-  Prisma's transcripts of these calls, so this is close to a best case.
-  Kavach warned a median 6.3 s after the first warning sign.
-- **Held-out calls** (`app/unseen_calls.py`): written after tuning and never
-  used for it. They are new variants (TRAI SIM block, customs parcel, reward
-  points, task jobs, KBC lottery, stock tips, a fake army buyer) and genuine
-  calls built to look alarming (a real bank fraud alert, police passport
-  verification, a delivery that really asks for an OTP).
-- **Phone line:** audio cut to the 300–3,400 Hz telephone band with
-  background hiss at 20 dB. It changed no outcome in either set.
+For the demo and blind sets, every call is spoken by Gnani Timbre and
+streamed through Gnani Prisma at real-time speed, exactly like a live call.
+Prisma returned each sentence a median **140–170 ms** after it ended. A run
+over a simulated phone line (300–3,400 Hz plus background hiss) gave the
+same results except one blind scam (10 / 15). The ICFD-31k transcripts are
+scored as text, with no audio.
 
-**What the held-out calls show.** Kavach caught the scams that use the
-words it knows (police threats, secrecy, QR codes) and missed the ones that
-say the same thing in other words: "pay a deposit and get double back",
-"tell me the code", tax on a lottery prize, Kannada stock tips. It never
-raised a false alarm, even on genuine calls that mention OTPs, police and
-blocked cards. Keyword rules are fast and explainable but don't generalise
-to new wording, which is why the next step below is a second layer that
-understands meaning, not just words. With 15 calls these numbers are rough;
-a larger independent test set is planned.
+![Highest risk per call in the blind set](assets/benchmark_blind.svg)
 
-![Highest risk per held-out call](assets/benchmark_held_out.svg)
+### How the rules got here, honestly
+
+1. **v1 rules, tuned on the 27 demo calls:** 18 / 18 there. On 15 new calls
+   I wrote afterwards (held-out set 1), only **4 / 9** scams. On ICFD-31k,
+   about **11%**. The rules had learned the *words* of my calls, not the
+   *idea* of a scam.
+2. **v2 rules:** rebuilt around the shape almost every phone scam shares:
+   a **story** (police, bank, prize, job, courier, tech support, loan…),
+   **pressure** (threats, urgency, secrecy) and a **request** (money, a
+   secret code, an app, a QR, a personal wallet). A request inside a story
+   or under pressure scores high, whatever the exact words. The vocabulary
+   was widened in English, Hindi and Kannada using ICFD-31k's *validation*
+   split and held-out set 1, which are therefore development data now.
+3. **Measured on data the rules never saw:** ICFD-31k test went from 11% to
+   61%, cross-domain from 3% to 26%, and the blind set scored 11 / 15 with
+   2 false alarms.
+
+The gap between ICFD validation (77%) and test (61%) shows that some of the
+gain is still fitting the development data; the test figure is the one to
+trust.
+
+### What the blind set shows
+
+Every mistake is something keyword rules cannot do:
+
+- **Negation:** "आपको कुछ भी भुगतान नहीं करना है" ("you don't need to pay
+  anything") counted as a payment request. A power-maintenance notice
+  became a false alarm.
+- **Whose account:** "put money into your account before the EMI date"
+  looked like "send money". A genuine loan reminder became a false alarm.
+- **Description instead of the word:** "the three-digit number on the back
+  of your card" is the CVV, but the word CVV is never said.
+- **Thin Kannada:** "tell me the verification code" and "technical support"
+  in Kannada aren't covered yet.
+
+These are the reasons for the next step: a small language model that reads
+the transcript when the rules are unsure. It would understand meaning, so
+negation, paraphrase and new scam types stop being blind spots. The rules
+would stay as the fast, explainable first line.
 
 <details>
-<summary>Chart for the demo calls (tuned on)</summary>
+<summary>Charts for the demo calls and held-out set 1</summary>
 
 ![Highest risk per demo call](assets/benchmark_demo_calls.svg)
+
+![Highest risk per call in held-out set 1](assets/benchmark_held_out.svg)
 
 </details>
 
@@ -118,7 +146,7 @@ a larger independent test set is planned.
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env        # then paste your Gnani API key into .env
-python -m pytest -q         # 102 tests, offline, no API calls
+python -m pytest -q         # 126 tests, offline, no API calls
 ```
 
 ## Run
@@ -150,9 +178,16 @@ python scripts/export_demo_calls.py --lang hi-IN --script upi
 ```bash
 python scripts/benchmark.py                 # 27 demo calls, clean audio
 python scripts/benchmark.py --noise         # the same calls over a simulated phone line
-python scripts/benchmark.py --unseen        # 15 held-out calls never used for tuning
+python scripts/benchmark.py --unseen        # held-out set 1 (development data since v2)
+python scripts/benchmark.py --blind         # blind held-out set 2
 python scripts/benchmark.py --rescore       # re-score saved transcripts after a change (free)
+python scripts/eval_icfd.py                 # ICFD-31k transcripts, text only (free, ~10 s)
 ```
+
+ICFD-31k isn't included in this repository. `scripts/eval_icfd.py` explains
+how to download its evaluation files (about 5 MB) from Hugging Face. It is
+released for defensive research and education; cite Ahuja, Prateek and
+Singh, *ICFD-31k*, IJCAI 2026.
 
 Results go to `cache/benchmark*/` as `results.md`, `results.json` and
 `chart.svg`. A full run takes about 4 minutes and uses Prisma and Timbre
@@ -188,7 +223,9 @@ python scripts/stream_file.py call.wav --lang hi-IN
 | `app/warnings_text.py`, `app/ask_caller.py` | What Kavach says, and the questions it suggests |
 | `app/tts.py` | Timbre client: one request at a time, retries, cached clips, cloned voice |
 | `app/demo_audio.py`, `app/mock_calls.py` | Spoken demo calls and their scripts |
-| `app/benchmark.py`, `app/unseen_calls.py` | The end-to-end benchmark and the held-out calls |
+| `app/benchmark.py` | The end-to-end benchmark (Timbre to Prisma to detector) |
+| `app/unseen_calls.py`, `app/blind_calls.py` | Held-out set 1 (development data since v2) and the blind set 2 |
+| `scripts/eval_icfd.py` | Scores the detector on ICFD-31k transcripts |
 | `static/index.html` | The whole UI: risk shield, live transcript, warnings, ask card, call report |
 
 ## Limitations and next steps
@@ -196,12 +233,11 @@ python scripts/stream_file.py call.wav --lang hi-IN
 - **Synthetic calls only.** No real scam recordings were used. Real callers
   talk over each other, use regional accents and change scripts; the next
   step is testing on consented real-world audio.
-- **Rules catch the scams they describe.** The held-out test shows it: 4 of
-  9 new scams caught. A familiar scam in unfamiliar words slips through. The
-  planned next layer is a small language model that reads the transcript
-  when the rules are unsure, while the rules stay as the fast, explainable
-  first line. Public synthetic datasets of Indian fraud-call transcripts,
-  such as ICFD-31k (IJCAI 2026), are the next, larger test.
+- **Rules don't understand meaning.** They miss negation ("you don't need
+  to pay"), paraphrase ("the three-digit number on the back") and new scam
+  types (26% on ICFD-31k's held-out fraud types). The planned next layer is
+  a small language model that reads the transcript when the rules are
+  unsure, while the rules stay as the fast, explainable first line.
 - **Speakerphone only.** Kavach hears the call through the laptop or phone
   microphone. A phone app or a telecom-side integration would remove that
   step.

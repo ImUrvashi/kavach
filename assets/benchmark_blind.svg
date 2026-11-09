@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 412" width="900" height="412" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="Kavach warned on 11 of 15 scam calls and 2 of 15 genuine calls">
+<rect width="900" height="412" fill="#fcfcfb"/>
+<text x="56" y="32" font-size="18" font-weight="600" fill="#0b0b0b">Kavach warned on 11 of 15 scam calls and 2 of 15 genuine calls</text>
+<text x="56" y="54" font-size="13" fill="#52514e">Highest risk score per call (blind set, written without seeing the rules) · spoken by Gnani Timbre, transcribed live by Gnani Prisma</text>
+<line x1="56" x2="876" y1="316.0" y2="316.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="320.0" font-size="11" fill="#52514e" text-anchor="end">0</text>
+<line x1="56" x2="876" y1="261.0" y2="261.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="265.0" font-size="11" fill="#52514e" text-anchor="end">25</text>
+<line x1="56" x2="876" y1="206.0" y2="206.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="210.0" font-size="11" fill="#52514e" text-anchor="end">50</text>
+<line x1="56" x2="876" y1="151.0" y2="151.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="155.0" font-size="11" fill="#52514e" text-anchor="end">75</text>
+<line x1="56" x2="876" y1="96.0" y2="96.0" stroke="#e7e6e2" stroke-width="1"/>
+<text x="48" y="100.0" font-size="11" fill="#52514e" text-anchor="end">100</text>
+<path d="M56.0,316.0 V100.0 Q56.0,96.0 60.0,96.0 H73.9 Q77.9,96.0 77.9,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · Customs/CBI (scam): highest risk 100, warned</title></path>
+<text x="66.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 66.9 328.0)">Customs/CBI</text>
+<path d="M81.9,316.0 V100.0 Q81.9,96.0 85.9,96.0 H99.7 Q103.7,96.0 103.7,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · Bijli cut (scam): highest risk 100, warned</title></path>
+<text x="92.8" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 92.8 328.0)">Bijli cut</text>
+<path d="M107.7,316.0 V100.0 Q107.7,96.0 111.7,96.0 H125.6 Q129.6,96.0 129.6,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · KBC lottery (scam): highest risk 100, warned</title></path>
+<text x="118.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 118.7 328.0)">KBC lottery</text>
+<path d="M133.6,316.0 V144.0 Q133.6,140.0 137.6,140.0 H151.5 Q155.5,140.0 155.5,144.0 V316.0 Z" fill="#2a78d6"><title>Hindi · Son arrested (scam): highest risk 80, warned</title></path>
+<text x="144.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 144.5 328.0)">Son arrested</text>
+<path d="M159.5,316.0 V100.0 Q159.5,96.0 163.5,96.0 H177.3 Q181.3,96.0 181.3,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · Stock tips (scam): highest risk 100, warned</title></path>
+<text x="170.4" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 170.4 328.0)">Stock tips</text>
+<path d="M185.3,316.0 V265.0 Q185.3,261.0 189.3,261.0 H203.2 Q207.2,261.0 207.2,265.0 V316.0 Z" fill="#eb6834"><title>Hindi · Bank alert ✓ (genuine): highest risk 25, no warning</title></path>
+<text x="196.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 196.3 328.0)">Bank alert ✓</text>
+<path d="M211.2,316.0 V318.0 Q211.2,314.0 215.2,314.0 H229.1 Q233.1,314.0 233.1,318.0 V316.0 Z" fill="#eb6834"><title>Hindi · Delivery ✓ (genuine): highest risk 0, no warning</title></path>
+<text x="222.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 222.1 328.0)">Delivery ✓</text>
+<path d="M237.1,316.0 V318.0 Q237.1,314.0 241.1,314.0 H254.9 Q258.9,314.0 258.9,318.0 V316.0 Z" fill="#eb6834"><title>Hindi · Doctor ✓ (genuine): highest risk 0, no warning</title></path>
+<text x="248.0" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 248.0 328.0)">Doctor ✓</text>
+<path d="M262.9,316.0 V210.0 Q262.9,206.0 266.9,206.0 H280.8 Q284.8,206.0 284.8,210.0 V316.0 Z" fill="#eb6834"><title>Hindi · Son rent ✓ (genuine): highest risk 50, no warning</title></path>
+<text x="273.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 273.9 328.0)">Son rent ✓</text>
+<path d="M288.8,316.0 V100.0 Q288.8,96.0 292.8,96.0 H306.7 Q310.7,96.0 310.7,100.0 V316.0 Z" fill="#eb6834"><title>Hindi · Power work ✓ (genuine): highest risk 100, warned</title></path>
+<text x="299.7" y="90.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<text x="299.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 299.7 328.0)">Power work ✓</text>
+<text x="183.3" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Hindi</text>
+<path d="M338.7,316.0 V318.0 Q338.7,314.0 342.7,314.0 H356.5 Q360.5,314.0 360.5,318.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · Card limit (scam): highest risk 0, no warning</title></path>
+<text x="349.6" y="308.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<text x="349.6" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 349.6 328.0)">Card limit</text>
+<path d="M364.5,316.0 V100.0 Q364.5,96.0 368.5,96.0 H382.4 Q386.4,96.0 386.4,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · OLX army QR (scam): highest risk 100, warned</title></path>
+<text x="375.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 375.5 328.0)">OLX army QR</text>
+<path d="M390.4,316.0 V100.0 Q390.4,96.0 394.4,96.0 H408.3 Q412.3,96.0 412.3,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · KYC app (scam): highest risk 100, warned</title></path>
+<text x="401.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 401.3 328.0)">KYC app</text>
+<path d="M416.3,316.0 V254.0 Q416.3,250.0 420.3,250.0 H434.1 Q438.1,250.0 438.1,254.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · Task job (scam): highest risk 30, no warning</title></path>
+<text x="427.2" y="244.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<text x="427.2" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 427.2 328.0)">Task job</text>
+<path d="M442.1,316.0 V100.0 Q442.1,96.0 446.1,96.0 H460.0 Q464.0,96.0 464.0,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · Refund care (scam): highest risk 100, warned</title></path>
+<text x="453.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 453.1 328.0)">Refund care</text>
+<path d="M468.0,316.0 V287.0 Q468.0,283.0 472.0,283.0 H485.9 Q489.9,283.0 489.9,287.0 V316.0 Z" fill="#eb6834"><title>Hinglish · Policy renew ✓ (genuine): highest risk 15, no warning</title></path>
+<text x="478.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 478.9 328.0)">Policy renew ✓</text>
+<path d="M493.9,316.0 V221.0 Q493.9,217.0 497.9,217.0 H511.7 Q515.7,217.0 515.7,221.0 V316.0 Z" fill="#eb6834"><title>Hinglish · School fee ✓ (genuine): highest risk 45, no warning</title></path>
+<text x="504.8" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 504.8 328.0)">School fee ✓</text>
+<path d="M519.7,316.0 V287.0 Q519.7,283.0 523.7,283.0 H537.6 Q541.6,283.0 541.6,287.0 V316.0 Z" fill="#eb6834"><title>Hinglish · Passport ✓ (genuine): highest risk 15, no warning</title></path>
+<text x="530.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 530.7 328.0)">Passport ✓</text>
+<path d="M545.6,316.0 V243.0 Q545.6,239.0 549.6,239.0 H563.5 Q567.5,239.0 567.5,243.0 V316.0 Z" fill="#eb6834"><title>Hinglish · Complaint ✓ (genuine): highest risk 35, no warning</title></path>
+<text x="556.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 556.5 328.0)">Complaint ✓</text>
+<path d="M571.5,316.0 V318.0 Q571.5,314.0 575.5,314.0 H589.3 Q593.3,314.0 593.3,318.0 V316.0 Z" fill="#eb6834"><title>Hinglish · Aunt call ✓ (genuine): highest risk 0, no warning</title></path>
+<text x="582.4" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 582.4 328.0)">Aunt call ✓</text>
+<text x="466.0" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Hinglish</text>
+<path d="M621.3,316.0 V100.0 Q621.3,96.0 625.3,96.0 H639.2 Q643.2,96.0 643.2,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · Courier drugs (scam): highest risk 100, warned</title></path>
+<text x="632.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 632.3 328.0)">Courier drugs</text>
+<path d="M647.2,316.0 V243.0 Q647.2,239.0 651.2,239.0 H665.1 Q669.1,239.0 669.1,243.0 V316.0 Z" fill="#2a78d6"><title>Kannada · AnyDesk (scam): highest risk 35, no warning</title></path>
+<text x="658.1" y="233.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<text x="658.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 658.1 328.0)">AnyDesk</text>
+<path d="M673.1,316.0 V100.0 Q673.1,96.0 677.1,96.0 H690.9 Q694.9,96.0 694.9,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · Sent by error (scam): highest risk 100, warned</title></path>
+<text x="684.0" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 684.0 328.0)">Sent by error</text>
+<path d="M698.9,316.0 V100.0 Q698.9,96.0 702.9,96.0 H716.8 Q720.8,96.0 720.8,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · Loan fee (scam): highest risk 100, warned</title></path>
+<text x="709.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 709.9 328.0)">Loan fee</text>
+<path d="M724.8,316.0 V188.0 Q724.8,184.0 728.8,184.0 H742.7 Q746.7,184.0 746.7,188.0 V316.0 Z" fill="#2a78d6"><title>Kannada · SIM block (scam): highest risk 60, no warning</title></path>
+<text x="735.7" y="178.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<text x="735.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 735.7 328.0)">SIM block</text>
+<path d="M750.7,316.0 V287.0 Q750.7,283.0 754.7,283.0 H768.5 Q772.5,283.0 772.5,287.0 V316.0 Z" fill="#eb6834"><title>Kannada · Courier ✓ (genuine): highest risk 15, no warning</title></path>
+<text x="761.6" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 761.6 328.0)">Courier ✓</text>
+<path d="M776.5,316.0 V144.0 Q776.5,140.0 780.5,140.0 H794.4 Q798.4,140.0 798.4,144.0 V316.0 Z" fill="#eb6834"><title>Kannada · EMI remind ✓ (genuine): highest risk 80, warned</title></path>
+<text x="787.5" y="134.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<text x="787.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 787.5 328.0)">EMI remind ✓</text>
+<path d="M802.4,316.0 V287.0 Q802.4,283.0 806.4,283.0 H820.3 Q824.3,283.0 824.3,287.0 V316.0 Z" fill="#eb6834"><title>Kannada · Hospital ✓ (genuine): highest risk 15, no warning</title></path>
+<text x="813.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 813.3 328.0)">Hospital ✓</text>
+<path d="M828.3,316.0 V318.0 Q828.3,314.0 832.3,314.0 H846.1 Q850.1,314.0 850.1,318.0 V316.0 Z" fill="#eb6834"><title>Kannada · Gas cylinder ✓ (genuine): highest risk 0, no warning</title></path>
+<text x="839.2" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 839.2 328.0)">Gas cylinder ✓</text>
+<path d="M854.1,316.0 V265.0 Q854.1,261.0 858.1,261.0 H872.0 Q876.0,261.0 876.0,265.0 V316.0 Z" fill="#eb6834"><title>Kannada · Exam fee ✓ (genuine): highest risk 25, no warning</title></path>
+<text x="865.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 865.1 328.0)">Exam fee ✓</text>
+<text x="748.7" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Kannada</text>
+<line x1="56" x2="876" y1="162.0" y2="162.0" stroke="#0b0b0b" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="876" y="156.0" font-size="11" fill="#0b0b0b" text-anchor="end">warns at 70+</text>
+<rect x="56" y="62" width="12" height="12" rx="3" fill="#2a78d6"/>
+<text x="74" y="72" font-size="13" fill="#0b0b0b">Scam call</text>
+<rect x="176" y="62" width="12" height="12" rx="3" fill="#eb6834"/>
+<text x="194" y="72" font-size="13" fill="#0b0b0b">Genuine call</text>
+</svg>

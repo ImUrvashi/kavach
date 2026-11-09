@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 412" width="900" height="412" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="Kavach warned on 4 of 9 scam calls and 0 of 6 genuine calls">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 412" width="900" height="412" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-label="Kavach warned on 8 of 9 scam calls and 0 of 6 genuine calls">
 <rect width="900" height="412" fill="#fcfcfb"/>
-<text x="56" y="32" font-size="18" font-weight="600" fill="#0b0b0b">Kavach warned on 4 of 9 scam calls and 0 of 6 genuine calls</text>
-<text x="56" y="54" font-size="13" fill="#52514e">Highest risk score per call (held-out calls, never used for tuning) · spoken by Gnani Timbre, transcribed live by Gnani Prisma</text>
+<text x="56" y="32" font-size="18" font-weight="600" fill="#0b0b0b">Kavach warned on 8 of 9 scam calls and 0 of 6 genuine calls</text>
+<text x="56" y="54" font-size="13" fill="#52514e">Highest risk score per call (held-out set 1) · spoken by Gnani Timbre, transcribed live by Gnani Prisma</text>
 <line x1="56" x2="876" y1="316.0" y2="316.0" stroke="#e7e6e2" stroke-width="1"/>
 <text x="48" y="320.0" font-size="11" fill="#52514e" text-anchor="end">0</text>
 <line x1="56" x2="876" y1="261.0" y2="261.0" stroke="#e7e6e2" stroke-width="1"/>
@@ -14,38 +14,34 @@
 <text x="48" y="100.0" font-size="11" fill="#52514e" text-anchor="end">100</text>
 <path d="M56.0,316.0 V100.0 Q56.0,96.0 60.0,96.0 H99.7 Q103.7,96.0 103.7,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · TRAI SIM (scam): highest risk 100, warned</title></path>
 <text x="79.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 79.9 328.0)">TRAI SIM</text>
-<path d="M107.7,316.0 V221.0 Q107.7,217.0 111.7,217.0 H151.5 Q155.5,217.0 155.5,221.0 V316.0 Z" fill="#2a78d6"><title>Hindi · power bill (scam): highest risk 45, no warning</title></path>
-<text x="131.6" y="211.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<path d="M107.7,316.0 V100.0 Q107.7,96.0 111.7,96.0 H151.5 Q155.5,96.0 155.5,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · power bill (scam): highest risk 100, warned</title></path>
 <text x="131.6" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 131.6 328.0)">power bill</text>
-<path d="M159.5,316.0 V133.0 Q159.5,129.0 163.5,129.0 H203.2 Q207.2,129.0 207.2,133.0 V316.0 Z" fill="#2a78d6"><title>Hindi · OLX buyer (scam): highest risk 85, warned</title></path>
+<path d="M159.5,316.0 V100.0 Q159.5,96.0 163.5,96.0 H203.2 Q207.2,96.0 207.2,100.0 V316.0 Z" fill="#2a78d6"><title>Hindi · OLX buyer (scam): highest risk 100, warned</title></path>
 <text x="183.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 183.3 328.0)">OLX buyer</text>
-<path d="M211.2,316.0 V210.0 Q211.2,206.0 215.2,206.0 H254.9 Q258.9,206.0 258.9,210.0 V316.0 Z" fill="#eb6834"><title>Hindi · bank alert ✓ (genuine): highest risk 50, no warning</title></path>
+<path d="M211.2,316.0 V254.0 Q211.2,250.0 215.2,250.0 H254.9 Q258.9,250.0 258.9,254.0 V316.0 Z" fill="#eb6834"><title>Hindi · bank alert ✓ (genuine): highest risk 30, no warning</title></path>
 <text x="235.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 235.1 328.0)">bank alert ✓</text>
 <path d="M262.9,316.0 V287.0 Q262.9,283.0 266.9,283.0 H306.7 Q310.7,283.0 310.7,287.0 V316.0 Z" fill="#eb6834"><title>Hindi · passport ✓ (genuine): highest risk 15, no warning</title></path>
 <text x="286.8" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 286.8 328.0)">passport ✓</text>
 <text x="183.3" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Hindi</text>
-<path d="M338.7,316.0 V122.0 Q338.7,118.0 342.7,118.0 H382.4 Q386.4,118.0 386.4,122.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · customs (scam): highest risk 90, warned</title></path>
+<path d="M338.7,316.0 V100.0 Q338.7,96.0 342.7,96.0 H382.4 Q386.4,96.0 386.4,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · customs (scam): highest risk 100, warned</title></path>
 <text x="362.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 362.5 328.0)">customs</text>
-<path d="M390.4,316.0 V298.0 Q390.4,294.0 394.4,294.0 H434.1 Q438.1,294.0 438.1,298.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · reward pts (scam): highest risk 10, no warning</title></path>
-<text x="414.3" y="288.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<path d="M390.4,316.0 V100.0 Q390.4,96.0 394.4,96.0 H434.1 Q438.1,96.0 438.1,100.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · reward pts (scam): highest risk 100, warned</title></path>
 <text x="414.3" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 414.3 328.0)">reward pts</text>
-<path d="M442.1,316.0 V276.0 Q442.1,272.0 446.1,272.0 H485.9 Q489.9,272.0 489.9,276.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · task job (scam): highest risk 20, no warning</title></path>
-<text x="466.0" y="266.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<path d="M442.1,316.0 V111.0 Q442.1,107.0 446.1,107.0 H485.9 Q489.9,107.0 489.9,111.0 V316.0 Z" fill="#2a78d6"><title>Hinglish · task job (scam): highest risk 95, warned</title></path>
 <text x="466.0" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 466.0 328.0)">task job</text>
 <path d="M493.9,316.0 V318.0 Q493.9,314.0 497.9,314.0 H537.6 Q541.6,314.0 541.6,318.0 V316.0 Z" fill="#eb6834"><title>Hinglish · power cut ✓ (genuine): highest risk 0, no warning</title></path>
 <text x="517.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 517.7 328.0)">power cut ✓</text>
-<path d="M545.6,316.0 V210.0 Q545.6,206.0 549.6,206.0 H589.3 Q593.3,206.0 593.3,210.0 V316.0 Z" fill="#eb6834"><title>Hinglish · delivery OTP ✓ (genuine): highest risk 50, no warning</title></path>
+<path d="M545.6,316.0 V287.0 Q545.6,283.0 549.6,283.0 H589.3 Q593.3,283.0 593.3,287.0 V316.0 Z" fill="#eb6834"><title>Hinglish · delivery OTP ✓ (genuine): highest risk 15, no warning</title></path>
 <text x="569.5" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 569.5 328.0)">delivery OTP ✓</text>
 <text x="466.0" y="398" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="middle">Hinglish</text>
 <path d="M621.3,316.0 V100.0 Q621.3,96.0 625.3,96.0 H665.1 Q669.1,96.0 669.1,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · cyber police (scam): highest risk 100, warned</title></path>
 <text x="645.2" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 645.2 328.0)">cyber police</text>
-<path d="M673.1,316.0 V276.0 Q673.1,272.0 677.1,272.0 H716.8 Q720.8,272.0 720.8,276.0 V316.0 Z" fill="#2a78d6"><title>Kannada · KBC lottery (scam): highest risk 20, no warning</title></path>
-<text x="696.9" y="266.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<path d="M673.1,316.0 V100.0 Q673.1,96.0 677.1,96.0 H716.8 Q720.8,96.0 720.8,100.0 V316.0 Z" fill="#2a78d6"><title>Kannada · KBC lottery (scam): highest risk 100, warned</title></path>
 <text x="696.9" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 696.9 328.0)">KBC lottery</text>
-<path d="M724.8,316.0 V318.0 Q724.8,314.0 728.8,314.0 H768.5 Q772.5,314.0 772.5,318.0 V316.0 Z" fill="#2a78d6"><title>Kannada · stock tips (scam): highest risk 0, no warning</title></path>
-<text x="748.7" y="308.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
+<path d="M724.8,316.0 V254.0 Q724.8,250.0 728.8,250.0 H768.5 Q772.5,250.0 772.5,254.0 V316.0 Z" fill="#2a78d6"><title>Kannada · stock tips (scam): highest risk 30, no warning</title></path>
+<text x="748.7" y="244.0" font-size="12" font-weight="700" fill="#0b0b0b" text-anchor="middle">✕</text>
 <text x="748.7" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 748.7 328.0)">stock tips</text>
-<path d="M776.5,316.0 V318.0 Q776.5,314.0 780.5,314.0 H820.3 Q824.3,314.0 824.3,318.0 V316.0 Z" fill="#eb6834"><title>Kannada · hospital ✓ (genuine): highest risk 0, no warning</title></path>
+<path d="M776.5,316.0 V265.0 Q776.5,261.0 780.5,261.0 H820.3 Q824.3,261.0 824.3,265.0 V316.0 Z" fill="#eb6834"><title>Kannada · hospital ✓ (genuine): highest risk 25, no warning</title></path>
 <text x="800.4" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 800.4 328.0)">hospital ✓</text>
 <path d="M828.3,316.0 V287.0 Q828.3,283.0 832.3,283.0 H872.0 Q876.0,283.0 876.0,287.0 V316.0 Z" fill="#eb6834"><title>Kannada · branch KYC ✓ (genuine): highest risk 15, no warning</title></path>
 <text x="852.1" y="328.0" font-size="10" fill="#52514e" text-anchor="end" transform="rotate(-40 852.1 328.0)">branch KYC ✓</text>

@@ -23,6 +23,7 @@ from . import config
 from .demo_audio import RATE, build_demo_call, to_frames
 from .detector import ScamDetector
 from .mock_calls import CALLS, EXPECTED_TYPE
+from .blind_calls import BLIND
 from .unseen_calls import UNSEEN
 from .stt import GnaniSTTSession
 from .warnings_text import SCAM_NAMES
@@ -37,6 +38,26 @@ SHORT = {  # short names for the chart
 }
 
 
+SET_TITLES = {"demo": "demo calls", "unseen": "held-out set 1", "blind": "blind held-out set"}
+SET_NOTES = {
+    "demo": "These are the demo calls the detector was tuned on, so this is close to a best case.",
+    "unseen": "Held-out set 1: written after the v1 tuning; the v2 rules were written knowing its misses.",
+    "blind": "Blind set: written by a separate agent that never saw the rules, and run only after the rules were frozen.",
+}
+SET_SUBTITLES = {"demo": " (demo calls, tuned on)", "unseen": " (held-out set 1)",
+                 "blind": " (blind set, written without seeing the rules)"}
+
+
+def call_set(results: list[dict]) -> str:
+    """Which set of calls these results come from."""
+    keys = {(r["lang"], r["script"]) for r in results}
+    if keys & set(BLIND):
+        return "blind"
+    if keys & set(UNSEEN):
+        return "unseen"
+    return "demo"
+
+
 def short(r: dict) -> str:
     """A call's short label for tables and the chart."""
     return r.get("short") or SHORT.get(r["script"], r["script"])
@@ -44,15 +65,18 @@ def short(r: dict) -> str:
 
 def call_spec(lang: str, script: str) -> tuple[list[str], str | None, str]:
     """(lines, expected scam type or None for a genuine call, short label)."""
-    if (lang, script) in UNSEEN:
-        u = UNSEEN[(lang, script)]
-        return u["lines"], u["expected"], u["short"]
+    for extra in (UNSEEN, BLIND):
+        if (lang, script) in extra:
+            u = extra[(lang, script)]
+            return u["lines"], u["expected"], u["short"]
     return CALLS[(lang, script)], EXPECTED_TYPE.get(script), SHORT[script]
 
 
-def all_calls(lang: str | None = None, script: str | None = None, unseen: bool = False) -> list[tuple[str, str]]:
-    """(language, script) for every call in a set, scams first, optionally filtered."""
-    source = list(UNSEEN) if unseen else list(CALLS)
+def all_calls(lang: str | None = None, script: str | None = None, unseen: bool = False,
+              blind: bool = False) -> list[tuple[str, str]]:
+    """(language, script) for every call in a set, scams first, optionally filtered.
+    Sets: the demo calls (default), held-out set 1 (unseen) or the blind set 2."""
+    source = list(BLIND) if blind else list(UNSEEN) if unseen else list(CALLS)
     calls = [(l, s) for (l, s) in source if (not lang or l == lang) and (not script or s == script)]
 
     def key(c):
@@ -217,11 +241,10 @@ def headline(s: dict) -> str:
 
 
 def to_markdown(results: list[dict], s: dict, noise: bool) -> str:
-    held_out = any((r["lang"], r["script"]) in UNSEEN for r in results)
-    out = [f"# Kavach benchmark{': held-out calls' if held_out else ''}\n",
+    which = call_set(results)
+    out = [f"# Kavach benchmark: {SET_TITLES[which]}\n",
            f"**{headline(s)}.**\n",
-           ("These calls were written after tuning and never used to tune the detector. " if held_out else
-            "These are the demo calls the detector was tuned on, so this is close to a best case. ") +
+           SET_NOTES[which] + " " +
            f"Each call was spoken by Gnani Timbre and streamed through Gnani Prisma "
            f"at real-time speed{' with phone-line audio (300–3,400 Hz plus background hiss, 20 dB)' if noise else ''}. "
            f"Synthetic calls, one stock voice per language."
@@ -273,7 +296,7 @@ def chart_svg(results: list[dict], s: dict) -> str:
              f'<rect width="{W}" height="{H}" fill="#fcfcfb"/>',
              f'<text x="{left}" y="32" font-size="18" font-weight="600" fill="#0b0b0b">{headline(s)}</text>',
              f'<text x="{left}" y="54" font-size="13" fill="#52514e">Highest risk score per call'
-             f'{" (held-out calls, never used for tuning)" if any((r["lang"], r["script"]) in UNSEEN for r in ok) else ""}'
+             f'{SET_SUBTITLES[call_set(ok)]}'
              f' · spoken by Gnani Timbre, transcribed live by Gnani Prisma</text>']
     # recessive grid and y-axis labels
     for v in (0, 25, 50, 75, 100):

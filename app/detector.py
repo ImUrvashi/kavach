@@ -9,7 +9,8 @@ import unicodedata
 from dataclasses import dataclass, field
 
 from . import config
-from .lexicon import COMBOS, PROTECTIVE, SIGNALS, SUPPRESSED_BY_PROTECTIVE
+from .lexicon import (COMBOS, PRESSURE, PROTECTIVE, REQUEST, SHAPE_BONUS, SIGNALS, STORY,
+                      SUPPRESSED_BY_PROTECTIVE)
 
 LEVEL_NAMES = ["safe", "caution", "warn", "alert"]
 
@@ -65,6 +66,14 @@ class ScamDetector:
         cats = set(self.seen)
         score = sum(s.weight for s in SIGNALS if s.category in cats)
         score += sum(bonus for combo, bonus in COMBOS if combo <= cats)
+        # The scam shape (v2): a request with a story and/or pressure.
+        requests = cats & REQUEST
+        if requests and cats & STORY:
+            score += SHAPE_BONUS["request+story"]
+        if requests and cats & PRESSURE:
+            score += SHAPE_BONUS["request+pressure"]
+        if len(requests) >= 2:
+            score += SHAPE_BONUS["two requests"]
         score += PROTECTIVE.weight * min(self.protective_hits, 1)
         return max(0, min(100, score))
 
@@ -94,6 +103,11 @@ class ScamDetector:
                      "credential", "remote", "parcel", "kyc", "utility", "bait", "payment"):
             if kind in c:
                 return kind
+        # v2 stories without a scam type of their own are named by what they ask for above;
+        # if they ask for nothing recognised, name the closest story.
+        for kind, name in (("tech_support", "remote"), ("loan", "payment"), ("insurance", "payment")):
+            if kind in c:
+                return name
         return "generic"
 
     # ---- main entry ----------------------------------------------------
