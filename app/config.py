@@ -52,6 +52,14 @@ DEMO_LEAD_S = 0.6   # silence before the caller starts
 DEMO_GAP_S = 0.9    # pause between the caller's sentences (Prisma needs 0.5 s to end a sentence)
 DEMO_TAIL_S = 2.5   # silence at the end, so Prisma returns the last sentence
 
+# Hosted demo (e.g. on Render). Set KAVACH_ACCESS_CODE so only people you
+# give it to can run calls that use Gnani (live mic, audio demo calls) on
+# your credits; without the code, demo calls play as the scripted text demo.
+# KAVACH_MAX_CALL_S ends a call after that many seconds. Both are off when
+# unset, as they are for a local run.
+ACCESS_CODE = os.getenv("KAVACH_ACCESS_CODE", "")
+MAX_CALL_S = float(os.getenv("KAVACH_MAX_CALL_S", "0"))
+
 # Risk thresholds (0-100)
 LEVEL_CAUTION = 40
 LEVEL_WARN = 70

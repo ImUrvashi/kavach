@@ -82,6 +82,13 @@ def _cache_path(payload: dict):
     return config.TTS_CACHE_DIR / f"{key}.wav"
 
 
+async def cached_clip(text: str, lang: str, use_clone: bool = True, voice: str | None = None) -> bytes | None:
+    """Like synthesize(), but only from the saved clips: never calls Timbre.
+    Used for visitors without the hosted demo's access code."""
+    path = _cache_path(_payload(text, lang, load_voice_embedding() if use_clone else None, voice))
+    return path.read_bytes() if path.exists() else None
+
+
 async def synthesize(text: str, lang: str, use_clone: bool = True, voice: str | None = None) -> bytes | None:
     """Returns WAV bytes, or None if there is no API key or the request fails.
 

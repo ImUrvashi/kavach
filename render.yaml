@@ -1,0 +1,26 @@
+# Render Blueprint for the hosted Kavach demo.
+# In the Render dashboard: New → Blueprint → pick this repository. Render asks
+# for the two secrets below (never commit them).
+services:
+  - type: web
+    name: kavach
+    runtime: python
+    plan: free  # sleeps when idle; the first visit then takes about a minute
+    # Install, then make the 30 warning clips and the two Hindi demo calls once,
+    # so warnings play instantly. Uses Timbre credits on each deploy; if Timbre
+    # is unavailable the build still succeeds and clips are made on first use.
+    buildCommand: >-
+      pip install -r requirements.txt &&
+      (python scripts/prewarm_warnings.py --stock || echo "warning clips not pre-made") &&
+      (python scripts/export_demo_calls.py --lang hi-IN --script scam || echo "demo call not pre-made") &&
+      (python scripts/export_demo_calls.py --lang hi-IN --script family || echo "demo call not pre-made")
+    startCommand: uvicorn app.server:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /config
+    autoDeploy: true
+    envVars:
+      - key: GNANI_API_KEY        # your Gnani key (secret)
+        sync: false
+      - key: KAVACH_ACCESS_CODE   # code for live calls; give it to the judges in the form's notes
+        sync: false
+      - key: KAVACH_MAX_CALL_S    # end a call after 3 minutes
+        value: "180"

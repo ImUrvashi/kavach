@@ -134,6 +134,12 @@
     align-items: start; padding: 0.7rem 0.95rem; border: 1px solid var(--line); border-radius: 10px;
     background: var(--raised); color: var(--ink); cursor: pointer; }
   .setup label.toggle::after { content: none; }
+  /* Access code (hosted demo only): a text box, so no chevron either */
+  .setup label.codefield::after { content: none; }
+  .setup label.codefield input { width: 100%; min-height: 48px; padding: 0.6rem 0.95rem; box-sizing: border-box;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--raised); color: var(--ink); font: inherit; }
+  .setup label.codefield input:focus-visible { outline: 3px solid var(--caution); outline-offset: 1px; }
+  .setup label.codefield .hint { color: var(--muted); font-size: 0.85rem; line-height: 1.35; }
   .setup label.toggle:hover { border-color: var(--muted); }
   .setup label.toggle input { width: 1.15rem; height: 1.15rem; margin: 0.1rem 0 0; accent-color: var(--safe); cursor: pointer; }
   .setup label.toggle input:focus-visible { outline: 3px solid var(--caution); outline-offset: 2px; }
@@ -323,6 +329,10 @@
           </optgroup>
         </select>
       </label>
+      <label class="codefield" id="codeWrap" hidden>Access code
+        <input type="text" id="code" autocomplete="off" spellcheck="false" placeholder="From the submission notes">
+        <span class="hint">Needed for live calls with Gnani. Without it, demo calls play as a scripted text demo.</span>
+      </label>
       <label class="toggle" for="speakLive">
         <input type="checkbox" id="speakLive">
         <span>Speak warnings during the call</span>
@@ -410,6 +420,9 @@ async function init() {
   // With a key, a switch chooses between the mic and a demo call (handy as a
   // backup for the demo video). Without a key, only demo calls are possible.
   $("sourceWrap").hidden = cfg.mock;
+  // Hosted demo: calls that use Gnani need an access code; remembered in this browser.
+  $("codeWrap").hidden = !cfg.access_required;
+  try { $("code").value = localStorage.getItem("kavach-access-code") || ""; } catch (e) {}
   updateMode();
   drawTimeline(0);
 }
@@ -768,7 +781,9 @@ async function start() {
   demoRun = isDemo();
   audioDemo = false;
   realStt = !demoRun;
-  const params = new URLSearchParams({ lang: $("lang").value, script: $("script").value, demo: demoRun ? 1 : 0 });
+  const code = $("code").value.trim();
+  try { localStorage.setItem("kavach-access-code", code); } catch (e) {}
+  const params = new URLSearchParams({ lang: $("lang").value, script: $("script").value, demo: demoRun ? 1 : 0, code });
   ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws?${params}`);
   ws.onmessage = (e) => {
     const msg = JSON.parse(e.data);
@@ -812,7 +827,7 @@ function setRunning(on) {
     : "";
   $("start").dataset.running = on ? "1" : "0";
   $("start").textContent = on ? "Stop" : isDemo() ? "Play demo call" : "Start listening";
-  $("lang").disabled = $("script").disabled = $("source").disabled = $("speakLive").disabled = on;
+  $("lang").disabled = $("script").disabled = $("source").disabled = $("speakLive").disabled = $("code").disabled = on;
 }
 
 $("start").addEventListener("click", async () => {

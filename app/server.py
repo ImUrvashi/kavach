@@ -11,6 +11,7 @@ never reach the browser, so all Gnani traffic goes through here.
 """
 import asyncio
 import base64
+import hmac
 import json
 import logging
 import time
@@ -23,7 +24,7 @@ from . import config
 from .demo_audio import build_demo_call, pcm_to_wav, to_frames
 from .detector import LEVEL_NAMES, ScamDetector
 from .stt import GnaniSTTSession, MockSTTSession
-from .tts import load_voice_embedding, synthesize
+from .tts import cached_clip, load_voice_embedding, synthesize
 from .ask_caller import ask_for
 from .warnings_text import SCAM_NAMES, warning_for, warnings_to_speak
 
@@ -50,17 +51,37 @@ async def get_config():
         "cloned_voice": load_voice_embedding() is not None,
         # Names of the scams Kavach knows, listed on the start screen.
         "scams": [name for kind, name in SCAM_NAMES.items() if kind != "generic"],
+        # Hosted demo: the page asks for the access code before calls that use Gnani.
+        "access_required": bool(config.ACCESS_CODE) and not config.MOCK_MODE,
+        "max_call_s": config.MAX_CALL_S,
     }
 
 
+def access_ok(code: str) -> bool:
+    """True if no access code is set, or the given one matches it."""
+    if config.MOCK_MODE or not config.ACCESS_CODE:
+        return True
+    return hmac.compare_digest(code.strip().encode(), config.ACCESS_CODE.encode())
+
+
 @app.websocket("/ws")
-async def call_socket(ws: WebSocket, lang: str = "hi-IN", demo: int = 0, script: str = "scam"):
+async def call_socket(ws: WebSocket, lang: str = "hi-IN", demo: int = 0, script: str = "scam", code: str = ""):
     await ws.accept()
+    # Hosted demo: without the access code, nothing may spend Gnani credits.
+    # A live call is refused; a demo call falls back to the text demo, and its
+    # warnings come only from saved clips.
+    allowed = access_ok(code)
+    if not allowed and demo != 1:
+        await ws.send_json({"type": "error", "message": "Live calls on this hosted demo need the access code "
+                            "(it's in the submission notes). Without it, choose \u201cA demo call\u201d to see a scripted demo."})
+        await ws.close()
+        return
+    speech = synthesize if allowed else cached_clip
     # Three kinds of call:
     #   live        the browser's mic → Prisma
     #   audio demo  demo=1 with a key: a scripted call spoken by Timbre → Prisma
     #   text demo   no key: the scripted lines go straight to the detector
-    text_demo = config.MOCK_MODE
+    text_demo = config.MOCK_MODE or not allowed
     audio_demo = demo == 1 and not text_demo
     detector = ScamDetector()
     state = {"muted": False, "active": True}
@@ -95,6 +116,8 @@ async def call_socket(ws: WebSocket, lang: str = "hi-IN", demo: int = 0, script:
 
     t0 = time.monotonic()  # the call's clock starts now, after any preparation
     await send({"type": "ready", "mock": text_demo, "audio_demo": audio_demo, "lang": lang})
+    if not allowed:
+        await send({"type": "notice", "message": "No access code, so this is the scripted text demo (no Gnani calls)."})
 
     # One warning at a time, in the order they were triggered: asyncio.Lock
     # wakes waiters first-come first-served, so a slow (uncached) clip can
@@ -107,7 +130,7 @@ async def call_socket(ws: WebSocket, lang: str = "hi-IN", demo: int = 0, script:
 
     async def _speak(scam_type: str, final: bool):
         wlang, spoken, display = warning_for(lang, scam_type, final)
-        audio = await synthesize(spoken, wlang)
+        audio = await speech(spoken, wlang)
         await send({
             "type": "warning",
             "final": final,
@@ -191,6 +214,13 @@ async def call_socket(ws: WebSocket, lang: str = "hi-IN", demo: int = 0, script:
     tasks = {audio_task, text_task}
     if audio_demo:
         tasks.add(asyncio.create_task(pump_demo()))
+
+    async def time_limit():
+        await asyncio.sleep(config.MAX_CALL_S)
+        await send({"type": "notice", "message": f"This hosted demo ends calls after {config.MAX_CALL_S / 60:g} minutes."})
+
+    if config.MAX_CALL_S > 0:
+        tasks.add(asyncio.create_task(time_limit()))
     try:
         await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
     except WebSocketDisconnect:

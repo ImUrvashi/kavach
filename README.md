@@ -5,7 +5,7 @@ speakerphone, spots a scam as it unfolds in Hindi, Hinglish or Kannada, and
 warns the listener before any money is lost: on screen with a chime during
 the call, then out loud in their language once the call ends.
 
-**Demo video:** _link coming_
+**Demo video:** _link coming_ · **Try it:** _link coming_ (live calls need the access code from the submission notes)
 
 Built for the Great Indian AI Internship Challenge on Gnani AI's models:
 
@@ -73,7 +73,7 @@ thin Kannada) need understanding, not more keywords.
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env           # paste your Gnani API key
-python -m pytest -q            # 130 offline tests
+python -m pytest -q            # 135 offline tests
 python -m uvicorn app.server:app --port 8000
 ```
 
@@ -85,6 +85,15 @@ by Timbre and transcribed by Prisma.
 Optional, with the speaker's consent: `python scripts/clone_voice.py
 reference.wav`, then `python scripts/prewarm_warnings.py` to cache every
 warning in that voice.
+
+## Hosted demo (Render)
+
+`render.yaml` deploys Kavach as a Render web service (WebSockets and HTTPS
+included; the mic needs HTTPS). In Render: **New → Blueprint**, pick this
+repository, and set two secrets: `GNANI_API_KEY` and `KAVACH_ACCESS_CODE`.
+The build pre-makes the warning clips. With an access code set, only people
+who have it can run calls that use Gnani; everyone else gets the scripted
+text demo. Calls stop after 3 minutes (`KAVACH_MAX_CALL_S`).
 
 ## Benchmark
 
