@@ -66,7 +66,7 @@ thin Kannada) need understanding, not more keywords.
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env           # paste your Gnani API key
-python -m pytest -q            # 126 offline tests
+python -m pytest -q            # 130 offline tests
 python -m uvicorn app.server:app --port 8000
 ```
 

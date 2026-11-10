@@ -188,6 +188,16 @@ EXPECTED_TYPE = {
 SCAM_SCRIPTS = list(EXPECTED_TYPE)
 LEGIT_SCRIPTS = ["legit", "legit_family", "legit_refund"]
 
+# Calls whose caller speaks as a man ("बोल रहा हूँ", "bol raha hoon"). They get
+# a male voice in the audible demo; the rest keep the default voice (some
+# callers are women, "बोल रही हूँ", and some lines don't show a gender).
+# Kannada first-person verbs don't mark gender, so Kannada is left as is.
+MALE_CALLERS = {
+    ("hi-IN", "scam"), ("hi-IN", "family"), ("hi-IN", "customer_care"), ("hi-IN", "upi"),
+    ("en-IN", "scam"), ("en-IN", "family"), ("en-IN", "customer_care"), ("en-IN", "upi"),
+    ("en-IN", "investment"), ("en-IN", "legit"),
+}
+
 
 def get_call(lang: str, kind: str) -> list[str]:
     """Lines of one scripted call; falls back to Hindi, then the fake-police scam."""

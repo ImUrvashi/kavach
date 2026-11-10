@@ -42,6 +42,12 @@ DEMO_CALLER_VOICE = {
     "kn": os.getenv("GNANI_DEMO_VOICE_KN") or TTS_VOICE["kn"],
     "en": os.getenv("GNANI_DEMO_VOICE_EN") or TTS_VOICE["hi"],
 }
+# Callers whose script speaks as a man ("बोल रहा हूँ") use a male stock voice
+# (Timbre v2.5 catalogue: Deepak, male, Hindi). See MALE_CALLERS in mock_calls.py.
+DEMO_MALE_VOICE = {
+    "hi": os.getenv("GNANI_DEMO_MALE_VOICE_HI", "Deepak"),
+    "en": os.getenv("GNANI_DEMO_MALE_VOICE_EN") or os.getenv("GNANI_DEMO_MALE_VOICE_HI", "Deepak"),
+}
 DEMO_LEAD_S = 0.6   # silence before the caller starts
 DEMO_GAP_S = 0.9    # pause between the caller's sentences (Prisma needs 0.5 s to end a sentence)
 DEMO_TAIL_S = 2.5   # silence at the end, so Prisma returns the last sentence

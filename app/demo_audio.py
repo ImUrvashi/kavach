@@ -16,7 +16,7 @@ import numpy as np
 import soundfile as sf
 
 from . import config
-from .mock_calls import get_call
+from .mock_calls import MALE_CALLERS, get_call
 from .tts import synthesize
 
 RATE = config.SAMPLE_RATE  # 16 kHz, what Prisma expects
@@ -46,6 +46,11 @@ def pcm_to_wav(pcm: np.ndarray) -> bytes:
     return buf.getvalue()
 
 
+def caller_is_male(stt_lang: str, script: str) -> bool:
+    """Whether this demo call's script speaks as a man, so it gets a male voice."""
+    return (stt_lang, script) in MALE_CALLERS
+
+
 def silence(seconds: float) -> np.ndarray:
     return np.zeros(int(seconds * RATE), dtype="<i2")
 
@@ -58,12 +63,13 @@ async def build_demo_call(stt_lang: str, script: str, lines: list[str] | None = 
     so Prisma returns the last sentence.
     """
     lang = TTS_LANG.get(stt_lang, "hi")
+    voices = config.DEMO_MALE_VOICE if caller_is_male(stt_lang, script) else config.DEMO_CALLER_VOICE
     parts = [silence(config.DEMO_LEAD_S)]
     for line in lines or get_call(stt_lang, script):
-        wav = await synthesize(line, lang, use_clone=False, voice=config.DEMO_CALLER_VOICE.get(lang))
+        wav = await synthesize(line, lang, use_clone=False, voice=voices.get(lang))
         if wav is None and lang == "en":
             # If Timbre won't read English, the Hindi voice can read Hinglish.
-            wav = await synthesize(line, "hi", use_clone=False, voice=config.DEMO_CALLER_VOICE.get("hi"))
+            wav = await synthesize(line, "hi", use_clone=False, voice=voices.get("hi"))
         if wav is None:
             return None
         parts += [wav_to_pcm16k(wav), silence(config.DEMO_GAP_S)]

@@ -52,6 +52,34 @@ def test_demo_call_is_lines_joined_with_pauses(monkeypatch, quick_timing):
     assert all(c == ("hi", False) for c in calls)    # Hindi voice, never the cloned family voice
 
 
+@pytest.mark.parametrize("lang, script, male", [
+    ("hi-IN", "scam", True),           # "इंस्पेक्टर राठौर बोल रहा हूँ"
+    ("hi-IN", "legit", False),         # "बैंक से बोल रही हूँ": a woman
+    ("en-IN", "legit_refund", False),  # "bol rahi hoon"
+])
+def test_caller_voice_matches_the_script(monkeypatch, quick_timing, lang, script, male):
+    voices = []
+
+    async def fake_synth(text, lang, use_clone=True, voice=None):
+        voices.append(voice)
+        return fake_wav(0.1)
+
+    monkeypatch.setattr(demo_audio, "synthesize", fake_synth)
+    asyncio.run(build_demo_call(lang, script))
+    tts_lang = demo_audio.TTS_LANG[lang]
+    expected = (config.DEMO_MALE_VOICE if male else config.DEMO_CALLER_VOICE)[tts_lang]
+    assert voices and all(v == expected for v in voices)
+
+
+def test_male_callers_really_speak_as_men():
+    from app.mock_calls import CALLS, MALE_CALLERS
+    for key in MALE_CALLERS:
+        text = " ".join(CALLS[key])
+        # first person only: "rahiye" (please stay) is not "rahi hoon" (I am, said by a woman)
+        assert "रहा हूँ" in text or "raha hoon" in text, key
+        assert "रही हूँ" not in text and "rahi hoon" not in text, key
+
+
 def test_hinglish_falls_back_to_the_hindi_voice(monkeypatch, quick_timing):
     async def fake_synth(text, lang, use_clone=True, voice=None):
         return None if lang == "en" else fake_wav(0.1)
