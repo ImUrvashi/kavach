@@ -5,7 +5,9 @@ speakerphone, spots a scam as it unfolds in Hindi, Hinglish or Kannada, and
 warns the listener before any money is lost: on screen with a chime during
 the call, then out loud in their language once the call ends.
 
-**Demo video:** _link coming_
+**Demo video** (2½ minutes, a real call recorded in one take; plays on LinkedIn):
+
+[![Kavach demo: a fake "digital arrest" call, warned at score 75](assets/demo_thumbnail.jpg)](https://www.linkedin.com/posts/burvashi_gnaniai-greatindianaiinternshipchallenge-ugcPost-7525891923623120896-74J8/)
 
 Built for the Great Indian AI Internship Challenge on Gnani AI's models:
 
