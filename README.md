@@ -5,7 +5,7 @@ speakerphone, spots a scam as it unfolds in Hindi, Hinglish or Kannada, and
 warns the listener before any money is lost: on screen with a chime during
 the call, then out loud in their language once the call ends.
 
-**Demo video:** _link coming_ · **Try it:** _link coming_ (live calls need the access code from the submission notes)
+**Demo video:** _link coming_ · **Try it:** https://kavach-r0rl.onrender.com (live calls need the access code from the submission notes; without it, demo calls play as a scripted text demo)
 
 Built for the Great Indian AI Internship Challenge on Gnani AI's models:
 
@@ -73,7 +73,7 @@ thin Kannada) need understanding, not more keywords.
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env           # paste your Gnani API key
-python -m pytest -q            # 135 offline tests
+python -m pytest -q            # 136 offline tests
 python -m uvicorn app.server:app --port 8000
 ```
 

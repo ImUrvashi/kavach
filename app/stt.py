@@ -128,8 +128,10 @@ class MockSTTSession:
             if self._closed:
                 return
             yield {"type": "transcript", "text": line, "segment_index": i, "latency": 0}
-        while not self._closed:
-            await asyncio.sleep(0.5)
+        # The scripted call is over: end it, like the audio demo does, so the
+        # report always appears. (Waiting for Stop could leave the connection
+        # idle long enough for a host to drop it, and the report with it.)
+        await asyncio.sleep(1.5)
 
     async def close(self):
         self._closed = True

@@ -78,3 +78,21 @@ def test_call_ends_at_the_time_limit(monkeypatch):
         while not msgs or msgs[-1]["type"] != "summary":
             msgs.append(ws.receive_json())
     assert any(m["type"] == "notice" and "ends calls after" in m["message"] for m in msgs)
+
+
+def test_text_demo_ends_by_itself_with_its_report(monkeypatch):
+    """No Stop is sent: the scripted call ends after its last line, and the
+    report (with both warnings already delivered) still arrives."""
+    monkeypatch.setattr(config, "MOCK_LINE_INTERVAL_S", 0.01)
+
+    async def fake_synthesize(text, lang, use_clone=True):
+        return b"RIFF-fake"
+
+    monkeypatch.setattr(server, "synthesize", fake_synthesize)
+    with TestClient(server.app).websocket_connect("/ws?demo=1&lang=hi-IN&script=scam") as ws:
+        msgs = []
+        while not msgs or msgs[-1]["type"] != "summary":
+            msgs.append(ws.receive_json())
+    kinds = [m["type"] for m in msgs]
+    assert kinds.count("warning") == 2 and kinds[-1] == "summary"
+    assert msgs[-1]["max_risk"] == 100

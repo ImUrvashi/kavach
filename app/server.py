@@ -190,6 +190,10 @@ async def call_socket(ws: WebSocket, lang: str = "hi-IN", demo: int = 0, script:
                     task.add_done_callback(speaking_tasks.discard)
             elif kind == "error":
                 await send({"type": "error", "message": f"Prisma: {ev.get('message')}"})
+        # Only the text demo's events end by themselves: let any warning still
+        # being made reach the page before the report.
+        if speaking_tasks:
+            await asyncio.wait(set(speaking_tasks), timeout=10)
 
     async def pump_demo():
         """Audio demo: send the browser the recording to play, stream the same
