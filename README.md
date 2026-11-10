@@ -59,13 +59,13 @@ a median 140–170 ms after it ended.
 \* ICFD-31k is about 99% fraud, so false alarms are measured on Kavach's own
 genuine calls.
 
-The first rules caught only 4 of 9 new scams: they had learned the words of
+<!-- The first rules caught only 4 of 9 new scams: they had learned the words of
 my test calls, not the idea of a scam. Rebuilding them around the scam shape
 raised ICFD-31k test from 11% to 61%. The remaining blind mistakes
 (negation, "money into *your* account", the CVV described but not named,
 thin Kannada) need understanding, not more keywords.
 
-![Highest risk per call in the blind set](assets/benchmark_blind.svg)
+![Highest risk per call in the blind set](assets/benchmark_blind.svg) -->
 
 ## Setup and run
 
@@ -112,7 +112,6 @@ Cite Ahuja, Prateek and Singh, *ICFD-31k*, IJCAI 2026.
 - Rules miss meaning: negation, paraphrase and new scam types. Next is a
   small language model that reads the transcript when the rules are unsure.
 - Speakerphone only; a phone app would remove that step.
-- Kannada needs review by more native speakers.
 
 ## Privacy
 
