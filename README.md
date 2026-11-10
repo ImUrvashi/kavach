@@ -2,7 +2,8 @@
 
 A real-time scam call shield for Indian families. Kavach listens to a call on
 speakerphone, spots a scam as it unfolds in Hindi, Hinglish or Kannada, and
-warns the listener out loud in their language before any money is lost.
+warns the listener before any money is lost: on screen with a chime during
+the call, then out loud in their language once the call ends.
 
 **Demo video:** _link coming_
 
@@ -20,9 +21,15 @@ Browser mic --16 kHz audio--> Kavach server --> Gnani Prisma (live transcript)
                                     |
                      Scam detector (risk 0-100)
                                     |
-              risk >= 70: spoken warning (Gnani Timbre)
+              risk >= 70: warning on screen + chime
               risk >= 85: "hang up now" + helpline 1930
+                                    |
+            call ends: warnings read out (Gnani Timbre)
 ```
+
+By default Kavach doesn't talk over the call: the caller would hear it, and
+Kavach would have to stop listening while it speaks. A switch, *Speak
+warnings during the call*, makes it say each warning straight away instead.
 
 The detector looks for the shape most phone scams share: a **story**
 (police, bank, courier, prize, job, tech support…), **pressure** (threats,

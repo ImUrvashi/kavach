@@ -129,6 +129,15 @@
   .setup select:focus-visible { outline: 3px solid var(--caution); outline-offset: 1px; }
   .setup select:disabled { cursor: default; opacity: 0.6; }
   .setup select option, .setup select optgroup { background: var(--raised); color: var(--ink); }
+  /* "Speak warnings during the call": a checkbox row, not a dropdown, so no chevron */
+  .setup label.toggle { display: grid; grid-template-columns: auto 1fr; column-gap: 0.7rem; row-gap: 0.15rem;
+    align-items: start; padding: 0.7rem 0.95rem; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--raised); color: var(--ink); cursor: pointer; }
+  .setup label.toggle::after { content: none; }
+  .setup label.toggle:hover { border-color: var(--muted); }
+  .setup label.toggle input { width: 1.15rem; height: 1.15rem; margin: 0.1rem 0 0; accent-color: var(--safe); cursor: pointer; }
+  .setup label.toggle input:focus-visible { outline: 3px solid var(--caution); outline-offset: 2px; }
+  .setup label.toggle .hint { grid-column: 2; color: var(--muted); font-size: 0.85rem; line-height: 1.35; }
   .setup.running label { display: none; }
   #setupNow { margin: 0; color: var(--muted); font-size: 0.95rem; text-align: center; }
   #start { padding: 0.85rem 1rem; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper);
@@ -314,6 +323,11 @@
           </optgroup>
         </select>
       </label>
+      <label class="toggle" for="speakLive">
+        <input type="checkbox" id="speakLive">
+        <span>Speak warnings during the call</span>
+        <span class="hint" id="speakHint"></span>
+      </label>
       <p id="setupNow" hidden></p>
       <button id="start" type="button">Start listening</button>
     </section>
@@ -326,7 +340,7 @@
       <ol class="steps">
         <li><div><strong>Put the call on speaker</strong><span>Keep the phone close to this laptop.</span></div></li>
         <li><div><strong>Pick the language and press Start listening</strong><span>Hindi, Hinglish or Kannada.</span></div></li>
-        <li><div><strong>Kavach listens and scores the call</strong><span>If it sounds like a scam, it warns you out loud and shows what to ask the caller.</span></div></li>
+        <li><div><strong>Kavach listens and scores the call</strong><span>If it sounds like a scam, it shows a warning with a chime and what to ask the caller, then reads the warning out when the call ends.</span></div></li>
       </ol>
       <h2>Scams it knows</h2>
       <ul id="scamChips" class="chips"></ul>
@@ -417,6 +431,19 @@ function updateMode() {
   if (!running) $("start").textContent = isDemo() ? "Play demo call" : "Start listening";
 }
 $("source").addEventListener("change", updateMode);
+
+// "Speak warnings during the call": off by default; the choice is remembered in this browser.
+function updateSpeakHint() {
+  $("speakHint").textContent = $("speakLive").checked
+    ? "Kavach says each warning straight away. It stops listening while it speaks, and the caller may hear it."
+    : "Warnings appear on screen with a chime, and Kavach reads them out when the call ends. It keeps listening, and the caller never hears it.";
+}
+try { $("speakLive").checked = localStorage.getItem("kavach-speak-live") === "1"; } catch (e) {}
+$("speakLive").addEventListener("change", () => {
+  try { localStorage.setItem("kavach-speak-live", $("speakLive").checked ? "1" : "0"); } catch (e) {}
+  updateSpeakHint();
+});
+updateSpeakHint();
 
 function setRisk(risk, level) {
   $("risk").textContent = risk;
@@ -516,17 +543,77 @@ function beep() {
   o.start(); o.stop(a.currentTime + 0.35);
 }
 
-// Warnings play one after another, never on top of each other. The server is
-// told "start" when the first one begins and "end" only when the queue is
-// empty, so the mic stays muted for the whole run and Kavach never
-// transcribes its own voice.
+// Two ways to warn, chosen with the "Speak warnings during the call" switch.
+//
+// Off (the default): Kavach doesn't talk over the call. A warning appears on
+// screen with a short chime, Kavach keeps listening to every word, and the
+// spoken warnings are read out once the call has ended, so the caller never
+// hears them.
+//
+// On: each warning is spoken at once. Warnings play one after another, never
+// on top of each other. The server is told "start" when the first one begins
+// and "end" only when the queue is empty, so the mic stays muted for the whole
+// run and Kavach never transcribes its own voice.
 let warnQueue = [], speaking = false, currentAudio = null, warnGen = 0;
+let speakDuring = false, readLater = [];
 const tell = (state) => ws?.readyState === 1 && ws.send(JSON.stringify({ type: "playback", state }));
 
 function onWarning(msg) {
   warningsShown.push(msg.text); // recorded on arrival, so the report lists it even if Stop comes first
-  warnQueue.push(msg);
-  if (!speaking) playNext();
+  if (speakDuring) {
+    warnQueue.push(msg);
+    if (!speaking) playNext();
+    return;
+  }
+  const later = msg.audio ? " · read out when the call ends" : " (add an API key to hear it)";
+  showWarning(msg, `shown at ${mmss(msg.t)}${later}`);
+  if (msg.audio) readLater.push(msg);
+  chime();
+}
+
+function showWarning(msg, when) {
+  $("alertLabel").textContent = msg.final ? "Hang up now" : "Warning";
+  $("alertText").textContent = msg.text;
+  $("alertMeta").textContent = `${msg.scam_name || "Possible scam"} · ${when}`;
+  $("alert").classList.toggle("final", !!msg.final);
+  $("alert").classList.add("show");
+  showAsk(msg.ask);
+}
+
+// A soft two-note chime when a warning appears without being spoken. The mic
+// is muted for that moment so Prisma doesn't try to transcribe it.
+function chime() {
+  try {
+    const a = new AudioContext(), g = a.createGain();
+    g.gain.value = 0.12;
+    g.connect(a.destination);
+    [[660, 0], [880, 0.18]].forEach(([freq, at]) => {
+      const o = a.createOscillator();
+      o.frequency.value = freq;
+      o.connect(g);
+      o.start(a.currentTime + at);
+      o.stop(a.currentTime + at + 0.16);
+    });
+    setTimeout(() => a.close(), 800);
+  } catch (e) {}
+  if (!speaking) { tell("start"); setTimeout(() => { if (!speaking) tell("end"); }, 600); }
+}
+
+// After the call (switch off): read out, in order, the warnings that were shown.
+function readOutAfterCall() {
+  const items = readLater;
+  readLater = [];
+  const gen = warnGen;
+  const playAt = (i) => {
+    if (gen !== warnGen) return;               // a new call has started
+    if (i >= items.length) { currentAudio = null; return; }
+    const msg = items[i];
+    showWarning(msg, `shown at ${mmss(msg.t)} · being read out now`);
+    const audio = currentAudio = new Audio(`data:audio/wav;base64,${msg.audio}`);
+    audio.onended = audio.onerror = () => playAt(i + 1);
+    audio.play().catch(() => playAt(i + 1));
+  };
+  if (items.length) playAt(0);
 }
 
 function playNext() {
@@ -537,13 +624,7 @@ function playNext() {
     return;
   }
   if (!speaking) { speaking = true; tell("start"); duckCaller(true); if (running) setLive("speaking"); }
-  $("alertLabel").textContent = msg.final ? "Hang up now" : "Warning";
-  $("alertText").textContent = msg.text;
-  const when = msg.audio ? `spoken aloud at ${mmss(msg.t)}` : `shown at ${mmss(msg.t)} (add an API key to hear it)`;
-  $("alertMeta").textContent = `${msg.scam_name || "Possible scam"} · ${when}`;
-  $("alert").classList.toggle("final", !!msg.final);
-  $("alert").classList.add("show");
-  showAsk(msg.ask);
+  showWarning(msg, msg.audio ? `spoken aloud at ${mmss(msg.t)}` : `shown at ${mmss(msg.t)} (add an API key to hear it)`);
 
   const gen = warnGen;
   let done = false;
@@ -576,6 +657,7 @@ function stopCaller() { callerAudio?.pause(); callerAudio = null; }
 function stopWarnings() {
   warnGen++; // stale timers and audio callbacks from the last call are ignored
   warnQueue = [];
+  readLater = [];
   currentAudio?.pause();
   currentAudio = null;
   if (speaking) { speaking = false; tell("end"); }
@@ -630,6 +712,7 @@ function onSummary(s) {
   ].filter(Boolean).join("\n");
   $("copy").addEventListener("click", copyReport);
   box.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  if (!speakDuring) readOutAfterCall();
 }
 
 async function copyReport() {
@@ -681,6 +764,7 @@ function stopMic() {
 // ---- starting and stopping a call ----
 async function start() {
   reset();
+  speakDuring = $("speakLive").checked;   // fixed for the whole call
   demoRun = isDemo();
   audioDemo = false;
   realStt = !demoRun;
@@ -724,10 +808,11 @@ function setRunning(on) {
   $("setupNow").hidden = !on;
   $("setupNow").textContent = on
     ? `${LANG_NAMES[$("lang").value]} · ${demoRun ? `Demo: ${selectedText($("script"))}` : "Live microphone"}`
+      + ` · ${speakDuring ? "warnings spoken during the call" : "warnings on screen, read out after"}`
     : "";
   $("start").dataset.running = on ? "1" : "0";
   $("start").textContent = on ? "Stop" : isDemo() ? "Play demo call" : "Start listening";
-  $("lang").disabled = $("script").disabled = $("source").disabled = on;
+  $("lang").disabled = $("script").disabled = $("source").disabled = $("speakLive").disabled = on;
 }
 
 $("start").addEventListener("click", async () => {
