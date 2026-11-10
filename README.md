@@ -5,7 +5,7 @@ speakerphone, spots a scam as it unfolds in Hindi, Hinglish or Kannada, and
 warns the listener before any money is lost: on screen with a chime during
 the call, then out loud in their language once the call ends.
 
-**Demo video:** _link coming_ · **Try it:** https://kavach-r0rl.onrender.com (live calls need the access code from the submission notes; without it, demo calls play as a scripted text demo)
+**Demo video:** _link coming_
 
 Built for the Great Indian AI Internship Challenge on Gnani AI's models:
 
